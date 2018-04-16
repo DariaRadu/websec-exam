@@ -15,12 +15,24 @@ $txtPassword = $_POST['txtPassword'];
 $txtEmail = $_POST['txtEmail'];
 $urlChannel = $_POST['urlChannel'];
 
+//HASHING THE INPUT PASSWORD
+
+$salt = base64_encode(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM));
+$password = $txtPassword;
+$hashed_password = hash("sha512", $password."palacsintA".$salt);
+echo $hashed_password;
+
+
+/*$pw = password_hash("rasmuslerdorf", PASSWORD_BCRYPT);*/
+    
+
+
 //preparing statement
 $insertUserStmt=$conn->prepare("INSERT INTO users (first_name, last_name, email, password, channel) VALUES (:first_name, :last_name, :email, :password, :channel);");
 $insertUserStmt->bindParam(':first_name', $txtFirstName, PDO::PARAM_STR, 45);
 $insertUserStmt->bindParam(':last_name', $txtFirstName, PDO::PARAM_STR, 45);
 $insertUserStmt->bindParam(':email', $txtEmail, PDO::PARAM_STR, 255);
-$insertUserStmt->bindParam(':password', $txtPassword, PDO::PARAM_STR, 255);
+$insertUserStmt->bindParam(':password', $hashed_password, PDO::PARAM_STR, 255);
 $insertUserStmt->bindParam(':channel', $urlChannel, PDO::PARAM_STR, 255);
 $insertUserStmt->execute();
 
