@@ -16,14 +16,11 @@ $userPass = $_POST['txtUserPassword'];
 // hashing the input password
 
 $password = $userPass;
-$hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
-/* SHA512 HASHING
-$salt = base64_encode(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM));
-$password = $userPass;
-$hashed_password = hash("sha512", $password."palacsintA".$salt);
-echo $hashed_password;
-*/
+$peber= "uvzj38fgFefVAf2!?1";
+$p_password = $userPass;
+$hashed_password = password_hash($p_password.$peber,PASSWORD_DEFAULT);
+
 
 
 //Getting user data from database
@@ -35,7 +32,6 @@ $retrieveUsers->execute();
 
 $users = $retrieveUsers->fetchAll();
 
-//print_r($users[0]["password"]);
 
 
 // temporary placeholder for correct login
@@ -45,8 +41,9 @@ $correctUserEmail= $users;
 if ( count($users) > 0 ){
     //echo " existing user";
     $correctPassword = $users[0]["password"];
-
-            if($hashed_password == $correctPassword)
+    // verifying the hashed password
+    $hashed_password_correct = password_verify($p_password.$peber, $correctPassword);
+            if($hashed_password_correct == $correctPassword)
                 {
                 echo "Success: you are now logged in";
                 }
