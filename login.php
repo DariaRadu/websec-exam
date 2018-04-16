@@ -1,4 +1,10 @@
+<?php
+session_start();
 
+$loggedAccountId = $_SESSION['id'];
+echo $loggedAccountId;
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,9 +24,7 @@
 
 
 
-<?php
 
-?>
 
 </body>
 </html>

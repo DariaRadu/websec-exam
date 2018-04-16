@@ -1,5 +1,8 @@
 <?php
 
+session_start();
+
+
 //DATABASE CONNECTION
 $servername = "localhost";
 $username = "root";
@@ -25,7 +28,7 @@ $hashed_password = password_hash($p_password.$peber,PASSWORD_DEFAULT);
 
 //Getting user data from database
 
-$retrieveUsers = $conn->prepare("SELECT password FROM youconnect.users WHERE email = :inputEmail ");
+$retrieveUsers = $conn->prepare("SELECT password, id FROM youconnect.users WHERE email = :inputEmail ");
 $retrieveUsers->bindParam(':inputEmail', $userEmail, PDO::PARAM_STR, 255);
 
 $retrieveUsers->execute();
@@ -38,6 +41,8 @@ $users = $retrieveUsers->fetchAll();
 $correctUserEmail= $users;
 
 
+
+
 if ( count($users) > 0 ){
     //echo " existing user";
     $correctPassword = $users[0]["password"];
@@ -46,6 +51,10 @@ if ( count($users) > 0 ){
             if($hashed_password_correct == $correctPassword)
                 {
                 echo "Success: you are now logged in";
+                $userId = $users[0]["id"];
+                //echo $userId;
+                $_SESSION['id'] = $userId;
+                
                 }
                 else
                 {
