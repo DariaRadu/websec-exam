@@ -11,7 +11,7 @@
 
 
     <form action="check_login.php" method="post" id="frmLogin">
-        <input type="text" id="divUserInput" name="txtUserName" placeholder="Insert Name" >
+        <input type="text" id="divUserInput" name="txtUserEmail" placeholder="Insert Email" >
         <input type="password" id="divPasswordInput" name="txtUserPassword" placeholder="Insert Password" >
         <button type="submit" id="btnLogIn">Login</button>
     </form>
