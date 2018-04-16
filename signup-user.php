@@ -17,13 +17,23 @@ $urlChannel = $_POST['urlChannel'];
 
 //HASHING THE INPUT PASSWORD
 
-$salt = base64_encode(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM));
+/* BCRYPT HASHING*/
+
 $password = $txtPassword;
-$hashed_password = hash("sha512", $password."palacsintA".$salt);
+$hashed_password = password_hash($password, PASSWORD_BCRYPT);
+
 echo $hashed_password;
 
 
-/*$pw = password_hash("rasmuslerdorf", PASSWORD_BCRYPT);*/
+
+/* SHA512 HASHING
+$salt = base64_encode(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM));
+$password = $txtPassword;
+$hashed_password = hash("sha512", $password."palacsintA".$salt);
+echo $hashed_password;*/
+
+
+
     
 
 

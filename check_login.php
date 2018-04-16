@@ -13,6 +13,19 @@ $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
 $userEmail = $_POST['txtUserEmail'];
 $userPass = $_POST['txtUserPassword'];
 
+// hashing the input password
+
+$password = $userPass;
+$hashed_password = password_hash($password, PASSWORD_BCRYPT);
+
+/* SHA512 HASHING
+$salt = base64_encode(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM));
+$password = $userPass;
+$hashed_password = hash("sha512", $password."palacsintA".$salt);
+echo $hashed_password;
+*/
+
+
 //Getting user data from database
 
 $retrieveUsers = $conn->prepare("SELECT password FROM youconnect.users WHERE email = :inputEmail ");
@@ -32,8 +45,8 @@ $correctUserEmail= $users;
 if ( count($users) > 0 ){
     //echo " existing user";
     $correctPassword = $users[0]["password"];
-    
-            if($userPass == $correctPassword)
+
+            if($hashed_password == $correctPassword)
                 {
                 echo "Success: you are now logged in";
                 }
