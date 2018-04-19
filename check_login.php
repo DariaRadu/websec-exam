@@ -1,5 +1,8 @@
 <?php
 
+session_start();
+
+
 //DATABASE CONNECTION
 $servername = "localhost";
 $username = "root";
@@ -16,39 +19,62 @@ $userPass = $_POST['txtUserPassword'];
 // hashing the input password
 
 $password = $userPass;
-$hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
-/* SHA512 HASHING
-$salt = base64_encode(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM));
-$password = $userPass;
-$hashed_password = hash("sha512", $password."palacsintA".$salt);
-echo $hashed_password;
-*/
+$peber= "uvzj38fgFefVAf2!?1";
+$p_password = $userPass;
+$hashed_password = password_hash($p_password.$peber,PASSWORD_DEFAULT);
+
 
 
 //Getting user data from database
 
-$retrieveUsers = $conn->prepare("SELECT password FROM youconnect.users WHERE email = :inputEmail ");
+$retrieveUsers = $conn->prepare("SELECT password, id FROM youconnect.users WHERE email = :inputEmail ");
 $retrieveUsers->bindParam(':inputEmail', $userEmail, PDO::PARAM_STR, 255);
 
 $retrieveUsers->execute();
 
 $users = $retrieveUsers->fetchAll();
 
-//print_r($users[0]["password"]);
 
 
 // temporary placeholder for correct login
 $correctUserEmail= $users;
 
 
+
+
 if ( count($users) > 0 ){
     //echo " existing user";
     $correctPassword = $users[0]["password"];
-
-            if($hashed_password == $correctPassword)
+    // verifying the hashed password
+    $hashed_password_correct = password_verify($p_password.$peber, $correctPassword);
+            if($hashed_password_correct == $correctPassword)
                 {
                 echo "Success: you are now logged in";
+                $userId = $users[0]["id"];
+
+                //adding the user ID to the session with encryption
+                
+                $secret_message= $userId;
+
+                // using a "fort knox" lvl of password generated from randomkeygen.com for security purposes
+                $secret_key="HoL]Y2tgJOF-V.$?URB7a/6*gO7:C,";
+
+                
+                $iv_len=openssl_cipher_iv_length("aes-256-cbc");
+                $iv=openssl_random_pseudo_bytes($iv_len);
+
+                $secret_id = openssl_encrypt($secret_message,"aes-256-cbc",$secret_key,OPENSSL_RAW_DATA,$iv);
+                $_SESSION['id'] = $secret_id;
+                echo $secret_id;
+                echo $_SESSION['id'];
+
+                $output = openssl_decrypt($secret_id, 'AES-256-CBC', $secret_key, OPENSSL_RAW_DATA, $iv);
+                
+                echo "This id is".$output;
+
+
+                
                 }
                 else
                 {

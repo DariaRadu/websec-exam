@@ -17,6 +17,9 @@
         <input name='txtPassword' type='password' placeholder="Password" required>
         <input name='txtEmail' type='email' placeholder="email" required>
         <input name='urlChannel' type='text' placeholder="Link to Youtube Channel" required>
+        <div class="captcha_wrapper">
+		    <div class="g-recaptcha" data-sitekey="6LcfkFMUAAAAAIeG1FJdjlggLsMa6tpd1Npc0ulq"></div>
+	    </div>
         <button type='submit'>Submit</submit>
     </form>
     
@@ -24,6 +27,7 @@
 
     </div>
     
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 
 </body>
 </html>
