@@ -1,19 +1,18 @@
 <?php
-session_start();
 
-$loggedAccountId = $_SESSION['id'];
-echo $loggedAccountId;
+//include
+include_once "include.php";
+
+session_start();
+if (isset($_SESSION['id'])){
+    $loggedAccountId = $_SESSION['id'];
+    echo $loggedAccountId;
+}
+
+
+gen_header();
 
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Login Websec</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
 
 
     <form action="check_login.php" method="post" id="frmLogin">
