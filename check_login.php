@@ -52,8 +52,28 @@ if ( count($users) > 0 ){
                 {
                 echo "Success: you are now logged in";
                 $userId = $users[0]["id"];
-                //echo $userId;
-                $_SESSION['id'] = $userId;
+
+                //adding the user ID to the session with encryption
+                
+                $secret_message= $userId;
+
+                // using a "fort knox" lvl of password generated from randomkeygen.com for security purposes
+                $secret_key="HoL]Y2tgJOF-V.$?URB7a/6*gO7:C,";
+
+                
+                $iv_len=openssl_cipher_iv_length("aes-256-cbc");
+                $iv=openssl_random_pseudo_bytes($iv_len);
+
+                $secret_id = openssl_encrypt($secret_message,"aes-256-cbc",$secret_key,OPENSSL_RAW_DATA,$iv);
+                $_SESSION['id'] = $secret_id;
+                echo $secret_id;
+                echo $_SESSION['id'];
+
+                $output = openssl_decrypt($secret_id, 'AES-256-CBC', $secret_key, OPENSSL_RAW_DATA, $iv);
+                
+                echo "This id is".$output;
+
+
                 
                 }
                 else
