@@ -14,25 +14,45 @@ if (isset($_POST["post"]) && $_POST["post"]!=''){
     $insertPost->execute();
 }
 
-//GET ALL POSTS
-
-$getAllPosts=$conn->query("SELECT posts.date, posts.post_text, posts.img_url, users.first_name, users.last_name from posts JOIN users WHERE user_id=users.id;");
-$getAllPosts->execute();
-while($post= $getAllPosts->fetch( PDO::FETCH_ASSOC )){
-    echo "<hr>User:  ". htmlentities($post['first_name']) ." ". htmlentities($post['last_name']) ."<br>\n" . htmlentities($post['post_text']) . "<br>\n";
-    echo "<form method='post'> \n
-            Comment: \n
-            <textarea  name='post' placeholder='comment here'></textarea> \n
-            <button type='submit'>comment</button> \n
-        </form>";
-//		echo "<hr>Username:  ". ($row['user_name']) . "<br>\n Comment: " . ($row['text']) . "<br>\n";
-}
-
 
 //ADD COMMENT
-/* if (isset ($_POST[''])) */
+if (isset ($_POST['comment']) && ($_POST['comment']!="") && isset ($_GET['pid'])){
+    $newComment = $_POST["comment"];
+    $userCommenting = 1/* $_SESSION["id"] */;
+    $postId = $_GET['pid'];
+    $insertComment=$conn->prepare("INSERT INTO comments (user_id, post_id, comment) VALUES (:userId, :postId, :comment);");
+    $insertComment->bindParam(':userId', $userCommenting, PDO::PARAM_INT);
+    $insertComment->bindParam(':postId', $postId, PDO::PARAM_INT);
+    $insertComment->bindParam(':comment', $newComment, PDO::PARAM_STR, 280);
+    $insertComment->execute();
+}
 
-//GET ALL COMMENTS FOR POSTS
+//GET ALL POSTS + COMMENTS
+
+//posts query
+$getAllPosts=$conn->query("SELECT posts.id, posts.date, posts.post_text, posts.img_url, users.first_name, users.last_name from posts JOIN users WHERE user_id=users.id;");
+$getAllPosts->execute();
+
+while($post= $getAllPosts->fetch( PDO::FETCH_ASSOC )){
+    echo "<div>
+            <hr>User:  ". htmlentities($post['first_name']) ." ". htmlentities($post['last_name']) ."<br>\n" . htmlentities($post['post_text']) . "<br>\n";
+
+    //comments
+    $getAllComments=$conn->query("SELECT comments.comment, users.first_name, users.last_name FROM comments JOIN users ON users.id=comments.user_id JOIN posts ON posts.id=comments.post_id WHERE post_id=".$post['id']);
+    $getAllComments->execute();
+    
+    while($comment= $getAllComments->fetch(PDO::FETCH_ASSOC)){
+
+        echo "<div class='comment'><hr>User:  ". htmlentities($comment['first_name']) ." ". htmlentities($comment['last_name']) ."<br>\n" . htmlentities($comment['comment']) . "<br>\n </div>";
+    }
+
+    echo "<form method='post' action='posts.php?pid=".$post['id']."'> \n
+            Comment: \n
+            <textarea  name='comment' placeholder='comment here' required></textarea> \n
+            <button type='submit'>comment</button> \n
+        </form>
+    </div>";
+}
 
 ?>
 
@@ -48,7 +68,7 @@ while($post= $getAllPosts->fetch( PDO::FETCH_ASSOC )){
 
     <form method="post">
         Post Here:
-        <textarea  name="post" placeholder="What is on your mind?"></textarea>
+        <textarea  name="post" placeholder="What is on your mind?" required++++++++++++++++++++++++++++++++></textarea>
         <button type="submit">POST</button>
     </form>
         
