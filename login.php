@@ -88,6 +88,7 @@ if (!isset($_POST)){
 }
 
 gen_header();
+nav();
 ?>
 
 <div id="loginPage">

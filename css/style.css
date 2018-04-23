@@ -4,7 +4,11 @@
   height: 40px;
   border-width: 2px;
   border-style: solid;
-  background-color: #ff0000;
+  background-color: red;
+}
+
+nav {
+  background-color: #cc181e;
 }
 
 body {
