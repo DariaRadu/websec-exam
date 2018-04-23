@@ -2,6 +2,9 @@
 //DB CONNECTION
 session_start();
 include "db.php";
+
+//include
+include "include.php";
 //ADD POST TO DB
 if (isset($_POST["post"]) && $_POST["post"]!=''){
     $newPost = $_POST["post"];
@@ -12,6 +15,7 @@ if (isset($_POST["post"]) && $_POST["post"]!=''){
     $insertPost->bindParam(':postText', $newPost, PDO::PARAM_STR, 280);
     $insertPost->bindParam(':imgUrl', $imgUrl, PDO::PARAM_STR, 45);
     $insertPost->execute();
+    
 }
 
 
@@ -28,14 +32,17 @@ if (isset ($_POST['comment']) && ($_POST['comment']!="") && isset ($_GET['pid'])
 }
 
 //GET ALL POSTS + COMMENTS
+$postsDiv='<div class="posts card">';
 
 //posts query
 $getAllPosts=$conn->query("SELECT posts.id, posts.date, posts.post_text, posts.img_url, users.first_name, users.last_name from posts JOIN users WHERE user_id=users.id;");
 $getAllPosts->execute();
 
 while($post= $getAllPosts->fetch( PDO::FETCH_ASSOC )){
-    echo "<div>
-            <hr>User:  ". htmlentities($post['first_name']) ." ". htmlentities($post['last_name']) ."<br>\n" . htmlentities($post['post_text']) . "<br>\n";
+    $commentsDiv='<div class="comments">';
+    $postDiv="<div class='post'>
+            <p>User:  ". htmlentities($post['first_name']) ." ". htmlentities($post['last_name']) ."</p>
+            <p>" . htmlentities($post['post_text']) . "</p>";
 
     //comments
     $getAllComments=$conn->query("SELECT comments.comment, users.first_name, users.last_name FROM comments JOIN users ON users.id=comments.user_id JOIN posts ON posts.id=comments.post_id WHERE post_id=".$post['id']);
@@ -43,34 +50,46 @@ while($post= $getAllPosts->fetch( PDO::FETCH_ASSOC )){
     
     while($comment= $getAllComments->fetch(PDO::FETCH_ASSOC)){
 
-        echo "<div class='comment'><hr>User:  ". htmlentities($comment['first_name']) ." ". htmlentities($comment['last_name']) ."<br>\n" . htmlentities($comment['comment']) . "<br>\n </div>";
+        $commentsDiv=$commentsDiv."<div class='comment'>
+                                        <p>User:  ". htmlentities($comment['first_name']) ." ". htmlentities($comment['last_name']) ."</p>
+                                        <p>" . htmlentities($comment['comment']) . "</p>
+                                    </div>";
     }
 
-    echo "<form method='post' action='posts.php?pid=".$post['id']."'> \n
-            Comment: \n
-            <textarea  name='comment' placeholder='comment here' required></textarea> \n
-            <button type='submit'>comment</button> \n
-        </form>
-    </div>";
+    $commentFormDiv="<div class='new-comment'>
+                        <form method='post' action='posts.php?pid=".$post['id']."'> \n
+                            Comment: \n
+                            <textarea  class='materialize-textarea' name='comment' placeholder='comment here' required></textarea> \n
+                            <button class='btn' type='submit'>comment</button> \n
+                        </form>
+                    </div>";
+    $commentsDiv=$commentsDiv.$commentFormDiv."</div>";
+    $postDiv=$postDiv.$commentsDiv."</div>";
+    $postsDiv=$postsDiv.$postDiv;
 }
 
+$postsDiv=$postsDiv."</div>";
+
+
+//header
+gen_header();
 ?>
+    <div class="container posts-container">
+        <div class="new-post card">
 
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Document</title>
-    </head>
-    <body>
+            <form method="post">
+                Post Here:
+                <div class="input-field">
+                    <textarea class="materialize-textarea" name="post" placeholder="What is on your mind?" required></textarea>
+                </div>
+                <button class="btn" type="submit">POST</button>
+            </form>
 
-    <form method="post">
-        Post Here:
-        <textarea  name="post" placeholder="What is on your mind?" required++++++++++++++++++++++++++++++++></textarea>
-        <button type="submit">POST</button>
-    </form>
-        
+        </div>
+    
+        <?php
+            echo $postsDiv;
+        ?>
+    </div>
     </body>
 </html>

@@ -2,6 +2,8 @@
 
 //include
 include_once "include.php";
+//DATABASE CONNECTION
+include "db.php";
 
 session_start();
 if (isset($_SESSION['id'])){
@@ -10,10 +12,93 @@ if (isset($_SESSION['id'])){
 }
 
 
+// user data received from login
+
+if (!isset($_POST)){
+    $userEmail = $_POST['txtUserEmail'];
+    $userPass = $_POST['txtUserPassword'];
+
+    // hashing the input password
+
+    $password = $userPass;
+
+    $peber= "uvzj38fgFefVAf2!?1";
+    $p_password = $userPass;
+    $hashed_password = password_hash($p_password.$peber,PASSWORD_DEFAULT);
+
+
+
+    //Getting user data from database
+
+    $retrieveUsers = $conn->prepare("SELECT password, id FROM youconnect.users WHERE email = :inputEmail ");
+    $retrieveUsers->bindParam(':inputEmail', $userEmail, PDO::PARAM_STR, 255);
+
+    $retrieveUsers->execute();
+
+    $users = $retrieveUsers->fetchAll();
+
+
+
+    // temporary placeholder for correct login
+    $correctUserEmail= $users;
+
+
+
+
+    if ( count($users) > 0 ){
+        //echo " existing user";
+        $correctPassword = $users[0]["password"];
+        // verifying the hashed password
+        $hashed_password_correct = password_verify($p_password.$peber, $correctPassword);
+                if($hashed_password_correct == $correctPassword)
+                    {
+                    echo "Success: you are now logged in";
+                    $userId = $users[0]["id"];
+
+                    //adding the user ID to the session with encryption
+                    
+                    $secret_message= $userId;
+
+                    // using a "fort knox" lvl of password generated from randomkeygen.com for security purposes
+                    $secret_key="HoL]Y2tgJOF-V.$?URB7a/6*gO7:C,";
+
+                    
+                    $iv_len=openssl_cipher_iv_length("aes-256-cbc");
+                    $iv=openssl_random_pseudo_bytes($iv_len);
+
+                    $secret_id = openssl_encrypt($secret_message,"aes-256-cbc",$secret_key,OPENSSL_RAW_DATA,$iv);
+                    $_SESSION['id'] = $secret_id;
+                    echo $secret_id;
+                    echo $_SESSION['id'];
+
+                    $output = openssl_decrypt($secret_id, 'AES-256-CBC', $secret_key, OPENSSL_RAW_DATA, $iv);
+                    
+                    echo "This id is".$output;
+
+
+                    
+                    }
+                    else
+                    {
+                        echo "Error: Wrong username or password";
+                    };
+                }
+                    else
+    {echo "oh no";};
+}
+
 gen_header();
 ?>
 
 
+<<<<<<< HEAD
+    <form method="post" id="frmLogin">
+        <input type="text" id="divUserInput" name="txtUserEmail" placeholder="Insert Email" >
+        <input type="password" id="divPasswordInput" name="txtUserPassword" placeholder="Insert Password" >
+        <button type="submit" id="btnLogIn">Login</button>
+    </form>
+=======
+>>>>>>> ce30417e9094f705bf5bb4dbbc33e57f6a18d8aa
 
 <div id="loginPage">
     <div id="loginLeftSide">
