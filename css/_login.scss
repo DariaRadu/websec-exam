@@ -1,0 +1,84 @@
+
+
+
+#loginLeftSide {
+    background-image: url("../graphics/group-photo.png");
+    float: left;
+    padding-right: 20%;
+    
+}
+
+
+
+#loginRightSide {
+    float: right;
+    //padding-right: 20%;
+    border-left: groove;
+}
+
+.groupPhoto {
+    display: block;
+    //padding-top: 20%;
+    height: 40%;
+    
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.loginLogo {
+    display: block;
+    height: 15%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btnLogin {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background-color:#12181e;
+}
+.btnLogin:hover {
+    background-color: white;
+}
+
+.form {
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.input-field label {
+    color: #000;
+  }
+  /* label focus color */
+  .input-field input[type=text]:focus + label {
+    color: #A52A2A;
+  }
+  /* label underline focus color */
+  .input-field input[type=text]:focus {
+    border-bottom: 1px solid #A52A2A;
+    box-shadow: 0 1px 0 0 #A52A2A;
+  }
+  /* valid color */
+  .input-field input[type=text].valid {
+    border-bottom: 1px solid #A52A2A;
+    box-shadow: 0 1px 0 0 #A52A2A;
+  }
+  /* invalid color */
+  .input-field input[type=text].invalid {
+    border-bottom: 1px solid #A52A2A;
+    box-shadow: 0 1px 0 0 #A52A2A;
+  }
+  /* icon prefix focus color */
+  .input-field .prefix.active {
+    color: rgb(0, 0, 0);
+  }
+
+  .btn:hover {
+      background-color: #A52A2A;
+  }
+
+  .mainpagebuttons{
+    margin-left: 15%;
+    //margin-right: 40%;
+  }
