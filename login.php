@@ -90,16 +90,6 @@ if (!isset($_POST)){
 gen_header();
 ?>
 
-
-<<<<<<< HEAD
-    <form method="post" id="frmLogin">
-        <input type="text" id="divUserInput" name="txtUserEmail" placeholder="Insert Email" >
-        <input type="password" id="divPasswordInput" name="txtUserPassword" placeholder="Insert Password" >
-        <button type="submit" id="btnLogIn">Login</button>
-    </form>
-=======
->>>>>>> ce30417e9094f705bf5bb4dbbc33e57f6a18d8aa
-
 <div id="loginPage">
     <div id="loginLeftSide">
         
