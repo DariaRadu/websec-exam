@@ -1,0 +1,30 @@
+//new post
+body{
+    background-color:$light-gray;
+}
+.posts-container{
+    margin-top:5vh;
+}
+
+.new-post{
+    padding:3vh;
+}
+
+.posts{
+    padding:3vh;
+}
+
+.post{
+    border-bottom: 1px solid grey;
+
+}
+
+.comments{
+    padding:3vh;
+}
+
+.comment{
+    border:1px solid black;
+    padding-left:3vh;
+    background-color:lightblue;
+}
