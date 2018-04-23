@@ -4,7 +4,8 @@
     include "include.php";
     
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    
+    $warnings='';
+
     //GETTING DATA FROM FORM
     if($_POST){
         $txtFirstName = $_POST['txtFirstName'];
@@ -39,7 +40,7 @@
             $verify = file_get_contents($url, false, $context);
             $captcha_success=json_decode($verify);
             if ($captcha_success->success==false) {
-                echo "<p>You are a bot! Go away!</p>";
+                $warnings="<p>Captcha not verified, please try again.</p>";
             } else if ($captcha_success->success==true) {
                 //preparing statement
                 $insertUserStmt=$conn->prepare("INSERT INTO users (first_name, last_name, email, password, channel) VALUES (:first_name, :last_name, :email, :password, :channel);");
@@ -49,7 +50,6 @@
                 $insertUserStmt->bindParam(':password', $hashed_password, PDO::PARAM_STR, 255);
                 $insertUserStmt->bindParam(':channel', $urlChannel, PDO::PARAM_STR, 255);
                 $insertUserStmt->execute();
-                echo "<p>You are not not a bot!</p>";
             }
     
     
@@ -57,11 +57,12 @@
     
   
     gen_header();
+    nav();
 ?>
 
 <div class="container container-signup">
 
-    <form action='signup-user.php' method='post'>
+    <form method='post'>
         <input name='txtFirstName' type='text' placeholder="First name" required>
         <input name='txtLastName' type='text' placeholder="Last name" required>
         <input name='txtPassword' type='password' placeholder="Password" required>
@@ -70,12 +71,13 @@
         <div class="captcha_wrapper">
 		    <div class="g-recaptcha" data-sitekey="6LcfkFMUAAAAAIeG1FJdjlggLsMa6tpd1Npc0ulq"></div>
 	    </div>
-        <button  class="btn" type='submit'>Submit</submit>
+        <button  class="btn btn-general" type='submit'>Submit</button>
     </form>
-    
+    <?php
+        echo $warnings;
+    ?>
 </div>
     
-    <script src='https://www.google.com/recaptcha/api.js'></script>
-
-</body>
-</html>
+<?php
+    footer();
+?>

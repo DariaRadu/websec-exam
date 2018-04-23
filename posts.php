@@ -15,7 +15,8 @@ if (isset($_POST["post"]) && $_POST["post"]!=''){
     $insertPost->bindParam(':postText', $newPost, PDO::PARAM_STR, 280);
     $insertPost->bindParam(':imgUrl', $imgUrl, PDO::PARAM_STR, 45);
     $insertPost->execute();
-    
+
+    header('Location: '."posts.php");
 }
 
 
@@ -29,13 +30,15 @@ if (isset ($_POST['comment']) && ($_POST['comment']!="") && isset ($_GET['pid'])
     $insertComment->bindParam(':postId', $postId, PDO::PARAM_INT);
     $insertComment->bindParam(':comment', $newComment, PDO::PARAM_STR, 280);
     $insertComment->execute();
+
+    header('Location: '."posts.php");
 }
 
 //GET ALL POSTS + COMMENTS
 $postsDiv='<div class="posts card">';
 
 //posts query
-$getAllPosts=$conn->query("SELECT posts.id, posts.date, posts.post_text, posts.img_url, users.first_name, users.last_name from posts JOIN users WHERE user_id=users.id;");
+$getAllPosts=$conn->query("SELECT posts.id, posts.date, posts.post_text, posts.img_url, users.first_name, users.last_name from posts JOIN users WHERE user_id=users.id ORDER BY posts.id DESC;");
 $getAllPosts->execute();
 
 while($post= $getAllPosts->fetch( PDO::FETCH_ASSOC )){
@@ -60,7 +63,7 @@ while($post= $getAllPosts->fetch( PDO::FETCH_ASSOC )){
                         <form method='post' action='posts.php?pid=".$post['id']."'> \n
                             Comment: \n
                             <textarea  class='materialize-textarea' name='comment' placeholder='comment here' required></textarea> \n
-                            <button class='btn' type='submit'>comment</button> \n
+                            <button class='btn btn-general' type='submit'>comment</button> \n
                         </form>
                     </div>";
     $commentsDiv=$commentsDiv.$commentFormDiv."</div>";
@@ -73,6 +76,7 @@ $postsDiv=$postsDiv."</div>";
 
 //header
 gen_header();
+nav();
 ?>
     <div class="container posts-container">
         <div class="new-post card">
@@ -82,7 +86,7 @@ gen_header();
                 <div class="input-field">
                     <textarea class="materialize-textarea" name="post" placeholder="What is on your mind?" required></textarea>
                 </div>
-                <button class="btn" type="submit">POST</button>
+                <button class="btn btn-general" type="submit">POST</button>
             </form>
 
         </div>
