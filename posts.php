@@ -61,10 +61,23 @@ $getAllPosts=$conn->query("SELECT posts.id, posts.date, posts.post_text, posts.i
 $getAllPosts->execute();
 
 while($post= $getAllPosts->fetch( PDO::FETCH_ASSOC )){
-    $commentsDiv='<div class="comments">';
-    $postDiv="<div class='post'>
+    $commentsDiv='<div class="comments card-action">';
+   /*  $postDiv="<div class='post'>
             <p>User:  ". htmlentities($post['first_name']) ." ". htmlentities($post['last_name']) ."</p>
-            <p>" . htmlentities($post['post_text']) . "</p>";
+            <p>" . htmlentities($post['post_text']) . "</p>"; */
+    $postDiv='<div class="card post">';
+    if ($post['img_url']!=null){
+        $postDiv=$postDiv.'<div class="card-image">
+                                <img src='.$post['img_url'].'>
+                            </div>';
+    }
+    $postDiv=$postDiv.'<div class="card-stacked">
+                            <div class="card-content">
+                                <p><strong>'. htmlentities($post['first_name']) ." ". htmlentities($post['last_name']) .':</strong></p>
+                                <p>'. htmlentities($post['post_text']) .'</p>
+                            </div>';
+                
+                
 
     //comments
     $getAllComments=$conn->query("SELECT comments.comment, users.first_name, users.last_name FROM comments JOIN users ON users.id=comments.user_id JOIN posts ON posts.id=comments.post_id WHERE post_id=".$post['id']);
@@ -85,8 +98,8 @@ while($post= $getAllPosts->fetch( PDO::FETCH_ASSOC )){
                             <button class='btn btn-general' type='submit'>comment</button> \n
                         </form>
                     </div>";
-    $commentsDiv=$commentsDiv.$commentFormDiv."</div>";
-    $postDiv=$postDiv.$commentsDiv."</div>";
+    $commentsDiv=$commentsDiv.$commentFormDiv."</div></div>";
+    $postDiv=$postDiv.$commentsDiv.'</div>';
     $postsDiv=$postsDiv.$postDiv;
 }
 

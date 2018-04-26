@@ -45,15 +45,19 @@
                 $warnings="<p>Captcha not verified, please try again.</p>";
             } else if ($captcha_success->success==true) {
                 //FILE UPLOAD FIRST
-                if (isset($_FILES['profilePic']) && check_file_mime($_FILES['profilePic']['tmp_name'])){
-                    $picturePath = $_FILES['profilePic']['name'];
-                    $extension = pathinfo($picturePath, PATHINFO_EXTENSION);
-                    $sProfilePicName = md5($picturePath).'.'.$extension;
-                    $sPathToPicture = $profilePicFolder.$sProfilePicName;
-                    move_uploaded_file( $_FILES['profilePic']['tmp_name'] , $sPathToPicture );
-                }else{
-                    $warnings='Profile picture must be an image.';
-                    exit();
+                $sPathToPicture='';
+                if (isset($_FILES['profilePic']['tmp_name'])){
+                    echo $_FILES['profilePic']['tmp_name'];
+                    if(check_file_mime($_FILES['profilePic']['tmp_name'])){
+                        $picturePath = $_FILES['profilePic']['name'];
+                        $extension = pathinfo($picturePath, PATHINFO_EXTENSION);
+                        $sProfilePicName = md5($picturePath).'.'.$extension;
+                        $sPathToPicture = $profilePicFolder.$sProfilePicName;
+                        move_uploaded_file( $_FILES['profilePic']['tmp_name'] , $sPathToPicture );
+                    }else{
+                        $warnings='Profile picture must be an image.';
+                        exit();
+                    } 
                 }
 
                 //preparing statement
