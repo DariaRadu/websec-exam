@@ -14,10 +14,9 @@ if (isset($_SESSION['id'])){
 
 // user data received from login
 
-if (!isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
+if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
     $userEmail = $_POST['txtUserEmail'];
     $userPass = $_POST['txtUserPassword'];
-
     // hashing the input password
 
     $password = $userPass;
@@ -88,9 +87,8 @@ if (!isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
                     else
     {echo "oh no";};
 }
-
 gen_header();
-nav();
+nav(0);
 ?>
 
 <div id="loginPage">

@@ -8,10 +8,19 @@ include "include.php";
 //echo $_SESSION['id'];
 //variables
 $postsImgFolder='img/posts/';
+
+//CHECK SESSION
+if (isset($_SESSION['id'])){
+    $loggedIn=$_SESSION['id'];
+}else{
+    $loggedIn=0;
+}
+
+
 //ADD POST TO DB
 if (isset($_POST["post"]) && $_POST["post"]!=''){
     $newPost = $_POST["post"];
-    $userPosting = 2/* $_SESSION["id"] */;
+    $userPosting = $_SESSION["id"];
     $imgUrl="";
     if (isset($_FILES['postImg']) && check_file_mime($_FILES['postImg']['tmp_name'])){
         $picturePath = $_FILES['postImg']['name'];
@@ -33,7 +42,7 @@ if (isset($_POST["post"]) && $_POST["post"]!=''){
 //ADD COMMENT
 if (isset ($_POST['comment']) && ($_POST['comment']!="") && isset ($_GET['pid'])){
     $newComment = $_POST["comment"];
-    $userCommenting = 1/* $_SESSION["id"] */;
+    $userCommenting = $_SESSION["id"];
     $postId = $_GET['pid'];
     $insertComment=$conn->prepare("INSERT INTO comments (user_id, post_id, comment) VALUES (:userId, :postId, :comment);");
     $insertComment->bindParam(':userId', $userCommenting, PDO::PARAM_INT);
@@ -86,7 +95,7 @@ $postsDiv=$postsDiv."</div>";
 
 //header
 gen_header();
-nav();
+nav($loggedIn);
 ?>
     <div class="container posts-container">
         <div class="new-post card">

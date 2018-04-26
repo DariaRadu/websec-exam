@@ -17,21 +17,36 @@ function gen_header() {
     <?php
 }
 
-function nav(){
-    ?>
-    
-    <nav>
-        <div class="nav-wrapper">
-        <a href="#" class="brand-logo">YouConnect</a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a href="login.php">Login</a></li>
-            <li><a href="signup.php">Signup</a></li>
-            <li><a href="posts.php">Timeline</a></li>
-        </ul>
-        </div>
-    </nav>
+function nav($loggedIn){
 
-    <?php
+    if($loggedIn==0){
+        ?>
+        <nav>
+            <div class="nav-wrapper">
+            <a href="#" class="brand-logo">YouConnect</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="login.php">Login</a></li>
+                <li><a href="signup.php">Signup</a></li>
+                <!-- <li><a href="posts.php">Timeline</a></li> -->
+            </ul>
+            </div>
+        </nav>
+        <?php
+    }else{
+        ?>
+        <nav>
+            <div class="nav-wrapper">
+            <a href="#" class="brand-logo">YouConnect</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="profile-page.php">Profile</a></li> 
+                <li><a href="posts.php">Timeline</a></li>
+                <li><a href="logout.php">Logout</a></li>  
+            </ul>
+            </div>
+        </nav>
+        <?php
+    }
+    
 }
 
 function footer(){

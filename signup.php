@@ -72,7 +72,7 @@
     
   
     gen_header();
-    nav();
+    nav(0);
 ?>
 
 <div class="container container-signup">
