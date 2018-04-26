@@ -5,6 +5,8 @@
     
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     $warnings='';
+    //profile pics folder
+    $profilePicFolder='img/dp/';
 
     //GETTING DATA FROM FORM
     if($_POST){
@@ -42,13 +44,26 @@
             if ($captcha_success->success==false) {
                 $warnings="<p>Captcha not verified, please try again.</p>";
             } else if ($captcha_success->success==true) {
+                //FILE UPLOAD FIRST
+                if (isset($_FILES['profilePic']) && check_file_mime($_FILES['profilePic']['tmp_name'])){
+                    $picturePath = $_FILES['profilePic']['name'];
+                    $extension = pathinfo($picturePath, PATHINFO_EXTENSION);
+                    $sProfilePicName = md5($picturePath).'.'.$extension;
+                    $sPathToPicture = $profilePicFolder.$sProfilePicName;
+                    move_uploaded_file( $_FILES['profilePic']['tmp_name'] , $sPathToPicture );
+                }else{
+                    $warnings='Profile picture must be an image.';
+                    exit();
+                }
+
                 //preparing statement
-                $insertUserStmt=$conn->prepare("INSERT INTO users (first_name, last_name, email, password, channel) VALUES (:first_name, :last_name, :email, :password, :channel);");
+                $insertUserStmt=$conn->prepare("INSERT INTO users (first_name, last_name, email, password, channel, profile_pic) VALUES (:first_name, :last_name, :email, :password, :channel, :profilePic);");
                 $insertUserStmt->bindParam(':first_name', $txtFirstName, PDO::PARAM_STR, 45);
                 $insertUserStmt->bindParam(':last_name', $txtFirstName, PDO::PARAM_STR, 45);
                 $insertUserStmt->bindParam(':email', $txtEmail, PDO::PARAM_STR, 255);
                 $insertUserStmt->bindParam(':password', $hashed_password, PDO::PARAM_STR, 255);
                 $insertUserStmt->bindParam(':channel', $urlChannel, PDO::PARAM_STR, 255);
+                $insertUserStmt->bindParam(':profilePic', $sPathToPicture, PDO::PARAM_STR, 300);
                 $insertUserStmt->execute();
             }
     
@@ -62,12 +77,22 @@
 
 <div class="container container-signup">
 
-    <form method='post'>
+    <form method='post' enctype="multipart/form-data">
         <input name='txtFirstName' type='text' placeholder="First name" required>
         <input name='txtLastName' type='text' placeholder="Last name" required>
         <input name='txtPassword' type='password' placeholder="Password" required>
         <input name='txtEmail' type='email' placeholder="email" required>
         <input name='urlChannel' type='text' placeholder="Link to Youtube Channel" required>
+       <!--  <input name='profilePic' type='file' required> -->
+       <div class="file-field input-field">
+            <div class="btn btn-general">
+                <span>Picture</span>
+                <input type="file" name="profilePic">
+            </div>
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text">
+            </div>
+        </div>
         <div class="captcha_wrapper">
 		    <div class="g-recaptcha" data-sitekey="6LcfkFMUAAAAAIeG1FJdjlggLsMa6tpd1Npc0ulq"></div>
 	    </div>

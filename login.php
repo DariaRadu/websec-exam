@@ -8,13 +8,13 @@ include "db.php";
 session_start();
 if (isset($_SESSION['id'])){
     $loggedAccountId = $_SESSION['id'];
-    //echo $loggedAccountId;
+    echo $loggedAccountId;
 }
 
 
 // user data received from login
 
-if (!isset($_POST)){
+if (!isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
     $userEmail = $_POST['txtUserEmail'];
     $userPass = $_POST['txtUserPassword'];
 
@@ -54,8 +54,10 @@ if (!isset($_POST)){
                     {
                     echo "Success: you are now logged in";
                     $userId = $users[0]["id"];
-
-                    //adding the user ID to the session with encryption
+                    $_SESSION['id']=$userId;
+                    header("Location: posts.php");
+                    exit();  
+                  /*   //adding the user ID to the session with encryption
                     
                     $secret_message= $userId;
 
@@ -73,7 +75,7 @@ if (!isset($_POST)){
 
                     $output = openssl_decrypt($secret_id, 'AES-256-CBC', $secret_key, OPENSSL_RAW_DATA, $iv);
                     
-                    echo "This id is".$output;
+                    echo "This id is".$output; */
 
 
                     
@@ -110,7 +112,7 @@ nav();
         
         <!-- <img class="loginLogo" src="graphics/youconnect.png" alt="logo"> -->   
 
-            <form action="check_login.php" method="post" id="frmLogin" class="col s12 form">
+            <form method="post" id="frmLogin" class="col s12 form">
                 <div class="row">
                         <div class="input-field col s12">
                             <input name="txtUserEmail" id="divUserInput" type="text" class="validate">
@@ -126,14 +128,12 @@ nav();
                 </div>
         
 
-                <button id="btnLogin" class="btn btn-general mainpagebuttons btnLoginNew waves-effect waves-light" type="button" name="action">Login
+                <button id="btnLogin" class="btn btn-general mainpagebuttons btnLoginNew waves-effect waves-light" type="submit" name="action">Login
                         <i class="material-icons right">send</i>
                 </button>
-                <button id="btnLogOut" class="btn btn-general mainpagebuttons btnLoginNew waves-effect waves-light" type="button" name="action">Logout
+                <button id="btnLogOut" class="btn btn-general mainpagebuttons btnLoginNew waves-effect waves-light" type="submit" name="action">Logout
                         <i class="material-icons right">send</i>
                 </button>
-
-                <!-- <button type="submit" id="btnLogIn">Login</button> -->
             
             </form>
 

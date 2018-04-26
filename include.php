@@ -45,4 +45,20 @@ function footer(){
     </html>
     <?php
 }
+
+//other functions needed
+function check_file_mime( $tmpname ) {
+    $finfo = finfo_open( FILEINFO_MIME_TYPE );
+    $mtype = finfo_file( $finfo, $tmpname );
+    finfo_close( $finfo );
+    if( $mtype == ( "image/png" ) || 
+        $mtype == ( "image/jpeg" ) ||
+        $mtype == ( "image/gif" ) ) {
+        return TRUE;
+    }
+    else {
+        return FALSE;
+    }
+}
+
 ?>

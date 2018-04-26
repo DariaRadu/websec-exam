@@ -5,11 +5,21 @@ include "db.php";
 
 //include
 include "include.php";
+//echo $_SESSION['id'];
+//variables
+$postsImgFolder='img/posts/';
 //ADD POST TO DB
 if (isset($_POST["post"]) && $_POST["post"]!=''){
     $newPost = $_POST["post"];
-    $userPosting = 1/* $_SESSION["id"] */;
+    $userPosting = 2/* $_SESSION["id"] */;
     $imgUrl="";
+    if (isset($_FILES['postImg']) && check_file_mime($_FILES['postImg']['tmp_name'])){
+        $picturePath = $_FILES['postImg']['name'];
+        $extension = pathinfo($picturePath, PATHINFO_EXTENSION);
+        $sPostImgName= md5($picturePath).'.'.$extension;
+        $imgUrl = $postsImgFolder.$sPostImgName;
+        move_uploaded_file( $_FILES['postImg']['tmp_name'] , $imgUrl );
+    }
     $insertPost=$conn->prepare("INSERT INTO posts (user_id, date, post_text, img_url) VALUES (:userId, NOW(), :postText, :imgUrl);");
     $insertPost->bindParam(':userId', $userPosting, PDO::PARAM_INT);
     $insertPost->bindParam(':postText', $newPost, PDO::PARAM_STR, 280);
@@ -81,10 +91,20 @@ nav();
     <div class="container posts-container">
         <div class="new-post card">
 
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 Post Here:
                 <div class="input-field">
                     <textarea class="materialize-textarea" name="post" placeholder="What is on your mind?" required></textarea>
+                    <!-- <input name="postImg" type='file'> -->
+                </div>
+                <div class="file-field input-field">
+                    <div class="btn btn-general">
+                        <span>image</span>
+                        <input type="file" name="postImg">
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text">
+                    </div>
                 </div>
                 <button class="btn btn-general" type="submit">POST</button>
             </form>
@@ -95,5 +115,7 @@ nav();
             echo $postsDiv;
         ?>
     </div>
-    </body>
-</html>
+
+<?php
+footer();
+?>
