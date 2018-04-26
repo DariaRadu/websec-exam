@@ -14,8 +14,14 @@ body{
     padding:3vh;
 }
 
-.post{
-    border-bottom: 1px solid grey;
+.card .post{
+    //border-bottom: 1px solid grey;
+    .card-image{
+        img{
+            height: 50vh;
+            object-fit: cover;
+        }
+    }
 
 }
 
@@ -28,3 +34,5 @@ body{
     padding-left:3vh;
     background-color:lightblue;
 }
+
+

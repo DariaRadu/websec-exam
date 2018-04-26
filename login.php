@@ -17,10 +17,13 @@ if (isset($_SESSION['id'])){
 if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
     $userEmail = $_POST['txtUserEmail'];
     $userPass = $_POST['txtUserPassword'];
+<<<<<<< HEAD
+=======
     
    // echo $userEmail;
    // echo $userPass;
 
+>>>>>>> 42c23b957cb654613e93923f013f1d2587890f38
     // hashing the input password
 
     $password = $userPass;
@@ -114,10 +117,23 @@ if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
             }
 
 
+<<<<<<< HEAD
+                    
+                    }
+                    else
+                    {
+                        echo "Error: Wrong username or password";
+                    };
+                }
+                    else
+    {echo "oh no";};
+}
+=======
     
 
+>>>>>>> 42c23b957cb654613e93923f013f1d2587890f38
 gen_header();
-nav();
+nav(0);
 ?>
 
 <div id="loginPage">

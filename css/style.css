@@ -21,8 +21,10 @@ body {
 .posts {
   padding: 3vh; }
 
-.post {
-  border-bottom: 1px solid grey; }
+.card .post .card-image img {
+  height: 50vh;
+  object-fit: cover;
+}
 
 .comments {
   padding: 3vh; }

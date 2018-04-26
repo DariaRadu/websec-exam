@@ -8,10 +8,19 @@ include "include.php";
 //echo $_SESSION['id'];
 //variables
 $postsImgFolder='img/posts/';
+
+//CHECK SESSION
+if (isset($_SESSION['id'])){
+    $loggedIn=$_SESSION['id'];
+}else{
+    $loggedIn=0;
+}
+
+
 //ADD POST TO DB
 if (isset($_POST["post"]) && $_POST["post"]!=''){
     $newPost = $_POST["post"];
-    $userPosting = 2/* $_SESSION["id"] */;
+    $userPosting = $_SESSION["id"];
     $imgUrl="";
     if (isset($_FILES['postImg']) && check_file_mime($_FILES['postImg']['tmp_name'])){
         $picturePath = $_FILES['postImg']['name'];
@@ -33,7 +42,7 @@ if (isset($_POST["post"]) && $_POST["post"]!=''){
 //ADD COMMENT
 if (isset ($_POST['comment']) && ($_POST['comment']!="") && isset ($_GET['pid'])){
     $newComment = $_POST["comment"];
-    $userCommenting = 1/* $_SESSION["id"] */;
+    $userCommenting = $_SESSION["id"];
     $postId = $_GET['pid'];
     $insertComment=$conn->prepare("INSERT INTO comments (user_id, post_id, comment) VALUES (:userId, :postId, :comment);");
     $insertComment->bindParam(':userId', $userCommenting, PDO::PARAM_INT);
@@ -52,10 +61,23 @@ $getAllPosts=$conn->query("SELECT posts.id, posts.date, posts.post_text, posts.i
 $getAllPosts->execute();
 
 while($post= $getAllPosts->fetch( PDO::FETCH_ASSOC )){
-    $commentsDiv='<div class="comments">';
-    $postDiv="<div class='post'>
+    $commentsDiv='<div class="comments card-action">';
+   /*  $postDiv="<div class='post'>
             <p>User:  ". htmlentities($post['first_name']) ." ". htmlentities($post['last_name']) ."</p>
-            <p>" . htmlentities($post['post_text']) . "</p>";
+            <p>" . htmlentities($post['post_text']) . "</p>"; */
+    $postDiv='<div class="card post">';
+    if ($post['img_url']!=null){
+        $postDiv=$postDiv.'<div class="card-image">
+                                <img src='.$post['img_url'].'>
+                            </div>';
+    }
+    $postDiv=$postDiv.'<div class="card-stacked">
+                            <div class="card-content">
+                                <p><strong>'. htmlentities($post['first_name']) ." ". htmlentities($post['last_name']) .':</strong></p>
+                                <p>'. htmlentities($post['post_text']) .'</p>
+                            </div>';
+                
+                
 
     //comments
     $getAllComments=$conn->query("SELECT comments.comment, users.first_name, users.last_name FROM comments JOIN users ON users.id=comments.user_id JOIN posts ON posts.id=comments.post_id WHERE post_id=".$post['id']);
@@ -76,8 +98,8 @@ while($post= $getAllPosts->fetch( PDO::FETCH_ASSOC )){
                             <button class='btn btn-general' type='submit'>comment</button> \n
                         </form>
                     </div>";
-    $commentsDiv=$commentsDiv.$commentFormDiv."</div>";
-    $postDiv=$postDiv.$commentsDiv."</div>";
+    $commentsDiv=$commentsDiv.$commentFormDiv."</div></div>";
+    $postDiv=$postDiv.$commentsDiv.'</div>';
     $postsDiv=$postsDiv.$postDiv;
 }
 
@@ -86,7 +108,7 @@ $postsDiv=$postsDiv."</div>";
 
 //header
 gen_header();
-nav();
+nav($loggedIn);
 ?>
     <div class="container posts-container">
         <div class="new-post card">
