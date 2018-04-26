@@ -17,6 +17,13 @@ if (isset($_SESSION['id'])){
 if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
     $userEmail = $_POST['txtUserEmail'];
     $userPass = $_POST['txtUserPassword'];
+<<<<<<< HEAD
+=======
+    
+   // echo $userEmail;
+   // echo $userPass;
+
+>>>>>>> 42c23b957cb654613e93923f013f1d2587890f38
     // hashing the input password
 
     $password = $userPass;
@@ -44,39 +51,73 @@ if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
 
 
 
-    if ( count($users) > 0 ){
-        //echo " existing user";
-        $correctPassword = $users[0]["password"];
-        // verifying the hashed password
-        $hashed_password_correct = password_verify($p_password.$peber, $correctPassword);
-                if($hashed_password_correct == $correctPassword)
-                    {
-                    echo "Success: you are now logged in";
-                    $userId = $users[0]["id"];
-                    $_SESSION['id']=$userId;
-                    header("Location: posts.php");
-                    exit();  
-                  /*   //adding the user ID to the session with encryption
-                    
-                    $secret_message= $userId;
 
-                    // using a "fort knox" lvl of password generated from randomkeygen.com for security purposes
-                    $secret_key="HoL]Y2tgJOF-V.$?URB7a/6*gO7:C,";
+    // CAPTCHA LOGIN
 
-                    
-                    $iv_len=openssl_cipher_iv_length("aes-256-cbc");
-                    $iv=openssl_random_pseudo_bytes($iv_len);
+    $url = 'https://www.google.com/recaptcha/api/siteverify';
+            $data = array(
+                'secret' => '6LcfkFMUAAAAAFjGG9bRR17M2YQaHDU60nhFCqpC',
+                'response' => $_POST["g-recaptcha-response"]
+            );
+            $options = array(
+                'http' => array (
+                    'method' => 'POST',
+                    'content' => http_build_query($data)
+                )
+            );
+            $context  = stream_context_create($options);
+            $verify = file_get_contents($url, false, $context);
+            $captcha_success=json_decode($verify);
+            if ($captcha_success->success==false) {
+                $warnings="<p>Captcha not verified, please try again.</p>";
+            } else if ($captcha_success->success==true) {
+                    if ( count($users) > 0 ){
+                        echo " existing user";
+                        $correctPassword = $users[0]["password"];
+                        // verifying the hashed password
+                        $hashed_password_correct = password_verify($p_password.$peber, $correctPassword);
+                                if($hashed_password_correct == $correctPassword)
+                                    {
+                                    echo "Success: you are now logged in";
+                                    $userId = $users[0]["id"];
+                                    $_SESSION['id']=$userId;
+                                    header("Location: posts.php");
+                                    exit();  
+                                /*  //adding the user ID to the session with encryption
+                                    
+                                    $secret_message= $userId;
 
-                    $secret_id = openssl_encrypt($secret_message,"aes-256-cbc",$secret_key,OPENSSL_RAW_DATA,$iv);
-                    $_SESSION['id'] = $secret_id;
-                    echo $secret_id;
-                    echo $_SESSION['id'];
+                                    // using a "fort knox" lvl of password generated from randomkeygen.com for security purposes
+                                    $secret_key="HoL]Y2tgJOF-V.$?URB7a/6*gO7:C,";
 
-                    $output = openssl_decrypt($secret_id, 'AES-256-CBC', $secret_key, OPENSSL_RAW_DATA, $iv);
-                    
-                    echo "This id is".$output; */
+                                    
+                                    $iv_len=openssl_cipher_iv_length("aes-256-cbc");
+                                    $iv=openssl_random_pseudo_bytes($iv_len);
+
+                                    $secret_id = openssl_encrypt($secret_message,"aes-256-cbc",$secret_key,OPENSSL_RAW_DATA,$iv);
+                                    $_SESSION['id'] = $secret_id;
+                                    echo $secret_id;
+                                    echo $_SESSION['id'];
+
+                                    $output = openssl_decrypt($secret_id, 'AES-256-CBC', $secret_key, OPENSSL_RAW_DATA, $iv);
+                                    
+                                    echo "This id is".$output; */
 
 
+                                    
+                                    }
+                                    else
+                                    {
+                                        echo "Error: Wrong username or password";
+                                    };
+                                }
+                                    else
+                    {echo "oh no";};
+                }
+            }
+
+
+<<<<<<< HEAD
                     
                     }
                     else
@@ -87,6 +128,10 @@ if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
                     else
     {echo "oh no";};
 }
+=======
+    
+
+>>>>>>> 42c23b957cb654613e93923f013f1d2587890f38
 gen_header();
 nav(0);
 ?>
@@ -124,12 +169,13 @@ nav(0);
                             <label for="first_name">Insert Password</label>
                         </div>
                 </div>
+
+                <div class="captcha_wrapper">
+		            <div class="g-recaptcha" data-sitekey="6LcfkFMUAAAAAIeG1FJdjlggLsMa6tpd1Npc0ulq"></div>
+	            </div>
         
 
                 <button id="btnLogin" class="btn btn-general mainpagebuttons btnLoginNew waves-effect waves-light" type="submit" name="action">Login
-                        <i class="material-icons right">send</i>
-                </button>
-                <button id="btnLogOut" class="btn btn-general mainpagebuttons btnLoginNew waves-effect waves-light" type="submit" name="action">Logout
                         <i class="material-icons right">send</i>
                 </button>
             
