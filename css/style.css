@@ -35,7 +35,8 @@ body {
 #loginLeftSide {
   background-image: url("../graphics/group-photo.png");
   float: left;
-  padding-right: 20%; }
+  padding-right: 50%;
+  padding-bottom: 23%; }
 
 #loginRightSide {
   float: right;
