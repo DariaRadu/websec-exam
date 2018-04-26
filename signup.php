@@ -80,8 +80,8 @@
     <form method='post' enctype="multipart/form-data">
         <input name='txtFirstName' type='text' placeholder="First name" required>
         <input name='txtLastName' type='text' placeholder="Last name" required>
-        <input name='txtPassword' type='password' placeholder="Password" required>
         <input name='txtEmail' type='email' placeholder="email" required>
+        <input name='txtPassword' type='password' placeholder="Password" required>
         <input name='urlChannel' type='text' placeholder="Link to Youtube Channel" required>
        <!--  <input name='profilePic' type='file' required> -->
        <div class="file-field input-field">
