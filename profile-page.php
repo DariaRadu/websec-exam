@@ -7,9 +7,13 @@ include "db.php";
 //include
 include "include.php";
 
-
+if (isset($_SESSION['id'])){
+    $loggedIn=$_SESSION['id'];
+}else{
+    header('Location: login.php');
+}
 gen_header();
-nav();
+nav($loggedIn);
 
 ?>
 

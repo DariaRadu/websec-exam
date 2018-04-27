@@ -17,13 +17,6 @@ if (isset($_SESSION['id'])){
 if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
     $userEmail = $_POST['txtUserEmail'];
     $userPass = $_POST['txtUserPassword'];
-<<<<<<< HEAD
-=======
-    
-   // echo $userEmail;
-   // echo $userPass;
-
->>>>>>> 42c23b957cb654613e93923f013f1d2587890f38
     // hashing the input password
 
     $password = $userPass;
@@ -117,7 +110,6 @@ if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
             }
 
 
-<<<<<<< HEAD
                     
                     }
                     else
@@ -128,10 +120,6 @@ if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
                     else
     {echo "oh no";};
 }
-=======
-    
-
->>>>>>> 42c23b957cb654613e93923f013f1d2587890f38
 gen_header();
 nav(0);
 ?>
