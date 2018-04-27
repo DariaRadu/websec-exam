@@ -8,7 +8,7 @@ include "db.php";
 session_start();
 if (isset($_SESSION['id'])){
     $loggedAccountId = $_SESSION['id'];
-    echo $loggedAccountId;
+    //echo $loggedAccountId;
 }
 
 
@@ -110,6 +110,7 @@ if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
             }
 
 
+<<<<<<< HEAD
                     
                     }
                     else
@@ -120,24 +121,30 @@ if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
                     else
     {echo "oh no";};
 }
+=======
+                   
+    
+
+>>>>>>> c1ae1aea6bd40bdbd2e6b9e6484bd276aa3e6cc7
 gen_header();
 nav(0);
 ?>
 
-<div id="loginPage">
-    <div id="loginLeftSide">
+<div id="loginPage" class="row" >
+    <div id="loginLeftSide" class="col s6">
         
-        <div id="introduction">
+        <div id="introduction" class="introText">
             <!-- <img class="groupPhoto" src="graphics/group-photo.png" alt="logo"> -->
-            Hello! Welcome to YouConnect! 
-
+            <h5>Hello! Welcome to the YouConnect Community!</h5>
+            <p>On this forum, you will be able to contact other youtubers and extend
+                you own network.</p>
         </div>
 
     </div>
         
 
 
-    <div id="loginRightSide">
+    <div id="loginRightSide" class="col s4">
 
         
         
@@ -168,10 +175,9 @@ nav(0);
                 </button>
             
             </form>
-
+            
         </div>
     
-
 
 </div>
 
