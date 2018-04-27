@@ -109,23 +109,6 @@ if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
                 }
             }
 
-
-<<<<<<< HEAD
-                    
-                    }
-                    else
-                    {
-                        echo "Error: Wrong username or password";
-                    };
-                }
-                    else
-    {echo "oh no";};
-}
-=======
-                   
-    
-
->>>>>>> c1ae1aea6bd40bdbd2e6b9e6484bd276aa3e6cc7
 gen_header();
 nav(0);
 ?>
