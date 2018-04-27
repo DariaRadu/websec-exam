@@ -109,10 +109,6 @@ if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
                 }
             }
 
-
-                   
-    
-
 gen_header();
 nav(0);
 ?>

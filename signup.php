@@ -10,6 +10,12 @@
 
     //GETTING DATA FROM FORM
     if($_POST){
+        if (!isset($_GET["csrf_token"]) || $_SESSION["csrf_token"]!=$_GET["csrf_token"])
+		{
+			echo "Security Error";
+			exit();
+		}
+
         $txtFirstName = $_POST['txtFirstName'];
         $txtLastName = $_POST['txtLastName'];
         $txtPassword = $_POST['txtPassword'];
@@ -74,7 +80,9 @@
     
     }
     
-  
+    //csrf token
+    $_SESSION["csrf_token"]=hash("sha256",rand()."1y=gNjFK5e[-8>-");
+    
     gen_header();
     nav(0);
 ?>
@@ -82,6 +90,7 @@
 <div class="container container-signup">
 
     <form method='post' enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION["csrf_token"] ?>">
         <input name='txtFirstName' type='text' placeholder="First name" required>
         <input name='txtLastName' type='text' placeholder="Last name" required>
         <input name='txtEmail' type='email' placeholder="email" required>

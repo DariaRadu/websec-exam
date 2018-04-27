@@ -14,11 +14,17 @@ if (isset($_SESSION['id'])){
     $loggedIn=$_SESSION['id'];
 }else{
     $loggedIn=0;
+    header('Location: login.php');
 }
 
 
 //ADD POST TO DB
 if (isset($_POST["post"]) && $_POST["post"]!=''){
+    if (!isset($_GET["csrf_token"]) || $_SESSION["csrf_token"]!=$_GET["csrf_token"])
+		{
+			echo "Security Error";
+			exit();
+		}
     $newPost = $_POST["post"];
     $userPosting = $_SESSION["id"];
     $imgUrl="";
@@ -41,6 +47,11 @@ if (isset($_POST["post"]) && $_POST["post"]!=''){
 
 //ADD COMMENT
 if (isset ($_POST['comment']) && ($_POST['comment']!="") && isset ($_GET['pid'])){
+    if (!isset($_GET["csrf_token"]) || $_SESSION["csrf_token"]!=$_GET["csrf_token"])
+		{
+			echo "Security Error";
+			exit();
+		}
     $newComment = $_POST["comment"];
     $userCommenting = $_SESSION["id"];
     $postId = $_GET['pid'];
@@ -52,6 +63,9 @@ if (isset ($_POST['comment']) && ($_POST['comment']!="") && isset ($_GET['pid'])
 
     header('Location: '."posts.php");
 }
+
+//csrf token
+$_SESSION["csrf_token"]=hash("sha256",rand()."rxY|1I]RkcmU.m2");
 
 //GET ALL POSTS + COMMENTS
 $postsDiv='<div class="posts card">';
@@ -86,6 +100,7 @@ while($post= $getAllPosts->fetch( PDO::FETCH_ASSOC )){
     while($comment= $getAllComments->fetch(PDO::FETCH_ASSOC)){
 
         $commentsDiv=$commentsDiv."<div class='comment'>
+                                        <input type='hidden' name='csrf_token' value='".$_SESSION["csrf_token"]."'>
                                         <p>User:  ". htmlentities($comment['first_name']) ." ". htmlentities($comment['last_name']) ."</p>
                                         <p>" . htmlentities($comment['comment']) . "</p>
                                     </div>";
@@ -105,7 +120,6 @@ while($post= $getAllPosts->fetch( PDO::FETCH_ASSOC )){
 
 $postsDiv=$postsDiv."</div>";
 
-
 //header
 gen_header();
 nav($loggedIn);
@@ -115,6 +129,7 @@ nav($loggedIn);
 
             <form method="post" enctype="multipart/form-data">
                 Post Here:
+                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION["csrf_token"] ?>">
                 <div class="input-field">
                     <textarea class="materialize-textarea" name="post" placeholder="What is on your mind?" required></textarea>
                     <!-- <input name="postImg" type='file'> -->
