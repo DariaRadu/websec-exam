@@ -108,6 +108,8 @@ if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
                     {echo "oh no";};
                 }
             }
+//csrf token
+$_SESSION["csrf_token"]=hash("sha256",rand()."1y=gNjFK5e[-8>-");
 
 gen_header();
 nav(0);
@@ -134,6 +136,7 @@ nav(0);
         <!-- <img class="loginLogo" src="graphics/youconnect.png" alt="logo"> -->   
 
             <form method="post" id="frmLogin" class="col s12 form">
+                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION["csrf_token"] ?>">
                 <div class="row">
                         <div class="input-field col s12">
                             <input name="txtUserEmail" id="divUserInput" type="text" class="validate">

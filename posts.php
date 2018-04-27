@@ -5,7 +5,7 @@ include "db.php";
 
 //include
 include "include.php";
-//echo $_SESSION['id'];
+
 //variables
 $postsImgFolder='img/posts/';
 
@@ -20,9 +20,9 @@ if (isset($_SESSION['id'])){
 
 //ADD POST TO DB
 if (isset($_POST["post"]) && $_POST["post"]!=''){
-    if (!isset($_GET["csrf_token"]) || $_SESSION["csrf_token"]!=$_GET["csrf_token"])
+    if (!isset($_POST["csrf_token"]) || $_SESSION["csrf_token"]!=$_POST["csrf_token"])
 		{
-			echo "Security Error";
+			echo "Security error.";
 			exit();
 		}
     $newPost = $_POST["post"];
@@ -47,7 +47,7 @@ if (isset($_POST["post"]) && $_POST["post"]!=''){
 
 //ADD COMMENT
 if (isset ($_POST['comment']) && ($_POST['comment']!="") && isset ($_GET['pid'])){
-    if (!isset($_GET["csrf_token"]) || $_SESSION["csrf_token"]!=$_GET["csrf_token"])
+    if (!isset($_POST["csrf_token"]) || $_SESSION["csrf_token"]!=$_POST["csrf_token"])
 		{
 			echo "Security Error";
 			exit();
@@ -67,11 +67,12 @@ if (isset ($_POST['comment']) && ($_POST['comment']!="") && isset ($_GET['pid'])
 //csrf token
 $_SESSION["csrf_token"]=hash("sha256",rand()."rxY|1I]RkcmU.m2");
 
+
 //GET ALL POSTS + COMMENTS
 $postsDiv='<div class="posts card">';
 
 //posts query
-$getAllPosts=$conn->query("SELECT posts.id, posts.date, posts.post_text, posts.img_url, users.first_name, users.last_name from posts JOIN users WHERE user_id=users.id ORDER BY posts.id DESC;");
+$getAllPosts=$conn->query("SELECT posts.id, posts.date, posts.post_text, posts.img_url, users.first_name, users.last_name from posts JOIN users ON user_id=users.id ORDER BY posts.id DESC;");
 $getAllPosts->execute();
 
 while($post= $getAllPosts->fetch( PDO::FETCH_ASSOC )){
