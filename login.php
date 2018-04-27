@@ -8,7 +8,7 @@ include "db.php";
 session_start();
 if (isset($_SESSION['id'])){
     $loggedAccountId = $_SESSION['id'];
-    echo $loggedAccountId;
+    //echo $loggedAccountId;
 }
 
 
@@ -17,13 +17,6 @@ if (isset($_SESSION['id'])){
 if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
     $userEmail = $_POST['txtUserEmail'];
     $userPass = $_POST['txtUserPassword'];
-<<<<<<< HEAD
-=======
-    
-   // echo $userEmail;
-   // echo $userPass;
-
->>>>>>> 42c23b957cb654613e93923f013f1d2587890f38
     // hashing the input password
 
     $password = $userPass;
@@ -117,39 +110,28 @@ if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
             }
 
 
-<<<<<<< HEAD
-                    
-                    }
-                    else
-                    {
-                        echo "Error: Wrong username or password";
-                    };
-                }
-                    else
-    {echo "oh no";};
-}
-=======
+                   
     
 
->>>>>>> 42c23b957cb654613e93923f013f1d2587890f38
 gen_header();
 nav(0);
 ?>
 
-<div id="loginPage">
-    <div id="loginLeftSide">
+<div id="loginPage" class="row" >
+    <div id="loginLeftSide" class="col s6">
         
-        <div id="introduction">
+        <div id="introduction" class="introText">
             <!-- <img class="groupPhoto" src="graphics/group-photo.png" alt="logo"> -->
-            Hello! Welcome to YouConnect! 
-
+            <h5>Hello! Welcome to the YouConnect Community!</h5>
+            <p>On this forum, you will be able to contact other youtubers and extend
+                you own network.</p>
         </div>
 
     </div>
         
 
 
-    <div id="loginRightSide">
+    <div id="loginRightSide" class="col s4">
 
         
         
@@ -180,10 +162,9 @@ nav(0);
                 </button>
             
             </form>
-
+            
         </div>
     
-
 
 </div>
 
