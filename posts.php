@@ -101,7 +101,6 @@ while($post= $getAllPosts->fetch( PDO::FETCH_ASSOC )){
     while($comment= $getAllComments->fetch(PDO::FETCH_ASSOC)){
 
         $commentsDiv=$commentsDiv."<div class='comment'>
-                                        <input type='hidden' name='csrf_token' value='".$_SESSION["csrf_token"]."'>
                                         <p>User:  ". htmlentities($comment['first_name']) ." ". htmlentities($comment['last_name']) ."</p>
                                         <p>" . htmlentities($comment['comment']) . "</p>
                                     </div>";
@@ -109,6 +108,7 @@ while($post= $getAllPosts->fetch( PDO::FETCH_ASSOC )){
 
     $commentFormDiv="<div class='new-comment'>
                         <form method='post' action='posts.php?pid=".$post['id']."'> \n
+                            <input type='hidden' name='csrf_token' value='".$_SESSION["csrf_token"]."'>
                             Comment: \n
                             <textarea  class='materialize-textarea' name='comment' placeholder='comment here' required></textarea> \n
                             <button class='btn btn-general' type='submit'>comment</button> \n
