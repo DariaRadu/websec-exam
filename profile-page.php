@@ -42,6 +42,25 @@ if (isset($_POST["post"]) && $_POST["post"]!=''){
     header('Location: '."profile-page.php");
 }
 
+//ADD COMMENT TO POST
+if (isset ($_POST['comment']) && ($_POST['comment']!="") && isset ($_GET['pid'])){
+    if (!isset($_POST["csrf_token"]) || $_SESSION["csrf_token"]!=$_POST["csrf_token"])
+		{
+			echo "Security Error";
+			exit();
+		}
+    $newComment = $_POST["comment"];
+    $userCommenting = $_SESSION["id"];
+    $postId = $_GET['pid'];
+    $insertComment=$conn->prepare("INSERT INTO comments (user_id, post_id, comment) VALUES (:userId, :postId, :comment);");
+    $insertComment->bindParam(':userId', $userCommenting, PDO::PARAM_INT);
+    $insertComment->bindParam(':postId', $postId, PDO::PARAM_INT);
+    $insertComment->bindParam(':comment', $newComment, PDO::PARAM_STR, 280);
+    $insertComment->execute();
+
+    header('Location: '."profile_page.php");
+}
+
 
 //csrf token
 $_SESSION["csrf_token"]=hash("sha256",rand()."rxY|1I]RkcmU.m2");
@@ -97,20 +116,20 @@ while($post= $getAllPosts->fetch( PDO::FETCH_ASSOC )){
     while($comment= $getAllComments->fetch(PDO::FETCH_ASSOC)){
 
         $commentsDiv=$commentsDiv."<div class='comment'>
-                                        <input type='hidden' name='csrf_token' value='".$_SESSION["csrf_token"]."'>
                                         <p>User:  ". htmlentities($comment['first_name']) ." ". htmlentities($comment['last_name']) ."</p>
                                         <p>" . htmlentities($comment['comment']) . "</p>
                                     </div>";
     }
 
-    $commentFormDiv="<div class='new-comment'>
-                        <form method='post' action='posts.php?pid=".$post['id']."'> \n
+    /* $commentFormDiv="<div class='new-comment'>
+                        <form method='post' action='profile_page.php?pid=".$post['id']."'> \n
                             Comment: \n
+                            <input type='hidden' name='csrf_token' value='".$_SESSION["csrf_token"]."'>
                             <textarea  class='materialize-textarea' name='comment' placeholder='comment here' required></textarea> \n
                             <button class='btn btn-general' type='submit'>comment</button> \n
                         </form>
-                    </div>";
-    $commentsDiv=$commentsDiv.$commentFormDiv."</div></div>";
+                    </div>"; */
+    $commentsDiv=$commentsDiv./* $commentFormDiv. */"</div></div>";
     $postDiv=$postDiv.$commentsDiv.'</div>';
     $postsDiv=$postsDiv.$postDiv;
 }
