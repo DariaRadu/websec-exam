@@ -1,4 +1,5 @@
 <?php
+    session_start();
     //INCLUDE+DB CONNECTION
     include "db.php";
     include "include.php";
@@ -53,7 +54,7 @@
                 //FILE UPLOAD FIRST
                 $sPathToPicture='';
                 if (isset($_FILES['profilePic']['tmp_name'])){
-                    echo $_FILES['profilePic']['tmp_name'];
+                    /* echo $_FILES['profilePic']['tmp_name']; */
                     if(check_file_mime($_FILES['profilePic']['tmp_name'])){
                         $picturePath = $_FILES['profilePic']['name'];
                         $extension = pathinfo($picturePath, PATHINFO_EXTENSION);
@@ -75,6 +76,8 @@
                 $insertUserStmt->bindParam(':channel', $urlChannel, PDO::PARAM_STR, 255);
                 $insertUserStmt->bindParam(':profilePic', $sPathToPicture, PDO::PARAM_STR, 300);
                 $insertUserStmt->execute();
+
+                header("Location: /");
             }
     
     

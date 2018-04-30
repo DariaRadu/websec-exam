@@ -11,7 +11,7 @@ if (isset($_SESSION['id'])){
     //echo $loggedAccountId;
 }
 
-
+$warnings="";
 // user data received from login
 
 if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
@@ -74,7 +74,7 @@ if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
                                     echo "Success: you are now logged in";
                                     $userId = $users[0]["id"];
                                     $_SESSION['id']=$userId;
-                                    header("Location: posts.php");
+                                    header("Location: timeline");
                                     exit();  
                                 /*  //adding the user ID to the session with encryption
                                     
@@ -101,11 +101,11 @@ if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
                                     }
                                     else
                                     {
-                                        echo "Error: Wrong username or password";
+                                        $warnings="<p>Email and/or password incorrect.</p>";
                                     };
                                 }
                                     else
-                    {echo "oh no";};
+                    {$warnings="<p>Email and/or password incorrect.</p>";};
                 }
             }
 //csrf token
@@ -161,7 +161,9 @@ nav(0);
                 </button>
             
             </form>
-            
+            <?php
+                echo $warnings;
+            ?>
         </div>
     
 

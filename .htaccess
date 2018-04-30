@@ -1,0 +1,7 @@
+RewriteEngine On 
+
+#RewriteRule ^timeline posts.php
+RewriteRule ^/ index.php 
+#RewriteRule ^signup signup.php
+#RewriteRule ^profile profile-page.php
+#RewriteRule ^logout logout.php

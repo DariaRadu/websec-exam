@@ -3,6 +3,7 @@
 
 #loginLeftSide {
     background-image: url("../graphics/group-photo.png");
+    background-size: cover;
    // float: left;
     padding-right: 50%;
     padding-bottom: 32%;
@@ -19,9 +20,10 @@
 }
 
 #loginRightSide {
-    //float: right;
-    //padding-right: 20%;
-   // border-left: groove;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20vh;
 }
 
 .groupPhoto {
