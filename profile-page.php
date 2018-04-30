@@ -13,7 +13,7 @@ $postsImgFolder='img/posts/';
 if (isset($_SESSION['id'])){
     $loggedIn=$_SESSION['id'];
 }else{
-    header('Location: login.php');
+    header('Location: index.php');
 }
 
 //ADD POST TO DB

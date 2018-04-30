@@ -1,8 +1,10 @@
+CREATE DATABASE  IF NOT EXISTS `youconnect` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `youconnect`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: youconnect
 -- ------------------------------------------------------
--- Server version	5.5.5-10.1.21-MariaDB
+-- Server version	5.5.5-10.1.31-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -32,7 +34,7 @@ CREATE TABLE `comments` (
   KEY `fk_post_id_idx` (`post_id`),
   CONSTRAINT `fk_post_id` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -61,7 +63,7 @@ CREATE TABLE `posts` (
   KEY `fk_user_id_idx` (`user_id`),
   KEY `fk_user_id_post_idx` (`user_id`),
   CONSTRAINT `fk_user_id_post` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -87,9 +89,10 @@ CREATE TABLE `users` (
   `email` varchar(45) NOT NULL,
   `password` varchar(600) NOT NULL,
   `channel` varchar(255) NOT NULL,
+  `profile_pic` varchar(300) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,7 +101,6 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Hello','Hello','dari@dari.com','daria','safsdg'),(2,'Adam','Adam','bundy@nope.com','45c9a835a7845b1e65e1f99f44b0eb4ffcd5eea5c8050c2f0f6a6c79783a5804','killmeclan'),(6,'asdaff','asdaff','kfgsd^v@24e12','efcb66814c8bfb2809cb8c8f780d7025b99047776a1a288242ff35d79834852eddf0cc4bff0e5e239d4622cc0f657bebe6a84fd0e4d359563ef6592b4f8514a6','dsa'),(7,'Eva','Eva','eva@gmail.com','18f3cf58387ce6b67cf4f25c31fe29f27f0b40b7f4f4de5fccd628b3442001c713beb2db3cdbf3a261c5b6c2ce8c95e803131bbcd178f47320f9956be8bd55dc','evaclan');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -111,4 +113,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-16 17:43:51
+-- Dump completed on 2018-04-30 12:19:18

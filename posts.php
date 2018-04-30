@@ -14,7 +14,7 @@ if (isset($_SESSION['id'])){
     $loggedIn=$_SESSION['id'];
 }else{
     $loggedIn=0;
-    header('Location: login.php');
+    header('Location: /');
 }
 
 
