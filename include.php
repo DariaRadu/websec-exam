@@ -62,6 +62,7 @@ function footer(){
     <?php
 }
 
+
 //other functions needed
 function check_file_mime( $tmpname ) {
     $finfo = finfo_open( FILEINFO_MIME_TYPE );
