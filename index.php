@@ -15,6 +15,11 @@ $warnings="";
 // user data received from login
 
 if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
+    if (!isset($_POST["csrf_token"]) || $_SESSION["csrf_token"]!=$_POST["csrf_token"])
+    {
+        echo "Security error.";
+        exit();
+    }
     $userEmail = $_POST['txtUserEmail'];
     $userPass = $_POST['txtUserPassword'];
     // hashing the input password
@@ -74,7 +79,7 @@ if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
                                     echo "Success: you are now logged in";
                                     $userId = $users[0]["id"];
                                     $_SESSION['id']=$userId;
-                                    header("Location: timeline");
+                                    header("Location: posts.php");
                                     exit();  
                                 /*  //adding the user ID to the session with encryption
                                     
