@@ -70,7 +70,7 @@
                 //preparing statement
                 $insertUserStmt=$conn->prepare("INSERT INTO users (first_name, last_name, email, password, channel, profile_pic) VALUES (:first_name, :last_name, :email, :password, :channel, :profilePic);");
                 $insertUserStmt->bindParam(':first_name', $txtFirstName, PDO::PARAM_STR, 45);
-                $insertUserStmt->bindParam(':last_name', $txtFirstName, PDO::PARAM_STR, 45);
+                $insertUserStmt->bindParam(':last_name', $txtLastName, PDO::PARAM_STR, 45);
                 $insertUserStmt->bindParam(':email', $txtEmail, PDO::PARAM_STR, 255);
                 $insertUserStmt->bindParam(':password', $hashed_password, PDO::PARAM_STR, 255);
                 $insertUserStmt->bindParam(':channel', $urlChannel, PDO::PARAM_STR, 255);
