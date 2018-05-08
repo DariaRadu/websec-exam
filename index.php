@@ -22,6 +22,10 @@ if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
     }
     $userEmail = $_POST['txtUserEmail'];
     $userPass = $_POST['txtUserPassword'];
+
+    //check if password is 8 characters long with a captial+special character
+    // ( only check one if, no else) 
+
     // hashing the input password
 
     $password = $userPass;

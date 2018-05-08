@@ -20,6 +20,11 @@
         $txtFirstName = $_POST['txtFirstName'];
         $txtLastName = $_POST['txtLastName'];
         $txtPassword = $_POST['txtPassword'];
+        //Checking the password to have numbers, small and capital letters
+        if (!preg_match('/[^A-Za-z0-9]+/', $txtPassword) || strlen($txtPassword) < 8) {
+            echo "Invalid password! Make sure it contains Capital letter, special character and has 8 letters";
+            exit();
+        }
         $txtEmail = $_POST['txtEmail'];
         $urlChannel = $_POST['urlChannel'];
         $response = $_POST["g-recaptcha-response"];
@@ -77,7 +82,7 @@
                 $insertUserStmt->bindParam(':profilePic', $sPathToPicture, PDO::PARAM_STR, 300);
                 $insertUserStmt->execute();
 
-                header("Location: /");
+                header("Location: index.php");
             }
     
     
