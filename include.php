@@ -44,7 +44,7 @@ function nav($loggedIn){
                 <li><a href="logout.php">Logout</a></li>  
             </ul>
             </div>
-        </nav>
+        </nav> 
         <?php
     }
     
