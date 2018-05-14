@@ -13,7 +13,7 @@ $postsImgFolder='img/posts/';
 if (isset($_SESSION['id'])){
     $loggedIn=$_SESSION['id'];
 }else{
-    header('Location: login.php');
+    header('Location: /');
 }
 
 //ADD POST TO DB
@@ -58,7 +58,7 @@ if (isset ($_POST['comment']) && ($_POST['comment']!="") && isset ($_GET['pid'])
     $insertComment->bindParam(':comment', $newComment, PDO::PARAM_STR, 280);
     $insertComment->execute();
 
-    header('Location: '."profile_page.php");
+    header('Location: '."profile-page.php");
 }
 
 

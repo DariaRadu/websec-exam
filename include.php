@@ -6,11 +6,12 @@ function gen_header() {
     <html lang="en">
         <head>
             <meta charset="UTF-8">
+            <!-- <base href="/websec/websec-exam/"> -->
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta http-equiv="X-UA-Compatible" content="ie=edge">
              <!-- Compiled and minified CSS -->
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
-            <link rel="stylesheet" href="css/style.css">
+            <link rel="stylesheet" href="css/style.css" type="text/css">
             <title>YouConnect</title>
         </head>
         <body>
@@ -25,7 +26,7 @@ function nav($loggedIn){
             <div class="nav-wrapper">
             <a href="#" class="brand-logo">YouConnect</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="login.php">Login</a></li>
+                <li><a href="/">Login</a></li>
                 <li><a href="signup.php">Signup</a></li>
                 <!-- <li><a href="posts.php">Timeline</a></li> -->
             </ul>
@@ -60,6 +61,7 @@ function footer(){
     </html>
     <?php
 }
+
 
 //other functions needed
 function check_file_mime( $tmpname ) {

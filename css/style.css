@@ -4,39 +4,50 @@
   height: 40px;
   border-width: 2px;
   border-style: solid;
-  background-color: red; }
+  background-color: red;
+}
 
 nav {
-  background-color: #cc181e; }
+  background-color: #cc181e;
+}
 
 body {
-  background-color: #f1f1f1; }
+  background-color: #f1f1f1;
+}
 
 .posts-container {
-  margin-top: 5vh; }
+  margin-top: 5vh;
+}
 
 .new-post {
-  padding: 3vh; }
+  padding: 3vh;
+}
 
 .posts {
-  padding: 3vh; }
+  padding: 3vh;
+}
 
 .card .post .card-image img {
   height: 50vh;
-  object-fit: cover; }
+  object-fit: cover;
+}
 
 .comments {
-  padding: 3vh; }
+  padding: 3vh;
+}
 
 .comment {
   border: 1px solid black;
   padding-left: 3vh;
-  background-color: lightblue; }
+  background-color: lightblue;
+}
 
 #loginLeftSide {
   background-image: url("../graphics/group-photo.png");
+  background-size: cover;
   padding-right: 50%;
-  padding-bottom: 32%; }
+  padding-bottom: 32%;
+}
 
 .introText {
   background-color: rgba(248, 247, 216, 0.7);
@@ -44,65 +55,87 @@ body {
   top: 25%;
   left: 3.5%;
   width: 42%;
-  height: 90%; }
+  height: 90%;
+}
+
+#loginRightSide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20vh;
+}
 
 .loginLogo {
   display: block;
   height: 15%;
   margin-left: auto;
-  margin-right: auto; }
+  margin-right: auto;
+}
 
 .btnLogin {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  background-color: #12181e; }
+  background-color: #12181e;
+}
 
 .btnLogin:hover {
-  background-color: white; }
+  background-color: white;
+}
 
 .form {
   margin-left: 20%;
-  margin-right: 20%; }
+  margin-right: 20%;
+}
 
 .input-field label {
-  color: #000; }
+  color: #000;
+}
 
 /* label focus color */
 .input-field input[type=text]:focus + label {
-  color: #A52A2A; }
+  color: #A52A2A;
+}
 
 /* label underline focus color */
 .input-field input[type=text]:focus {
   border-bottom: 1px solid #A52A2A;
-  box-shadow: 0 1px 0 0 #A52A2A; }
+  box-shadow: 0 1px 0 0 #A52A2A;
+}
 
 /* valid color */
 .input-field input[type=text].valid {
   border-bottom: 1px solid #A52A2A;
-  box-shadow: 0 1px 0 0 #A52A2A; }
+  box-shadow: 0 1px 0 0 #A52A2A;
+}
 
 /* invalid color */
 .input-field input[type=text].invalid {
   border-bottom: 1px solid #A52A2A;
-  box-shadow: 0 1px 0 0 #A52A2A; }
+  box-shadow: 0 1px 0 0 #A52A2A;
+}
 
 /* icon prefix focus color */
 .input-field .prefix.active {
-  color: black; }
+  color: black;
+}
 
 .btn:hover {
-  background-color: #A52A2A; }
+  background-color: #A52A2A;
+}
 
 .mainpagebuttons {
-  margin-left: 15%; }
+  margin-left: 15%;
+}
 
 .profilePicture {
   display: block;
-  height: 15%; }
+  height: 15%;
+}
 
 .card-link li a {
-  color: red !important; }
+  color: red !important;
+}
 
 /*
 #profilePage {
@@ -121,7 +154,10 @@ body {
     margin-right: 2%;
   //  margin-left: 80%;
 }*/
+<<<<<<< HEAD
 .chatMessage {
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2); }
 
 /*# sourceMappingURL=style.css.map */
+=======
+>>>>>>> 4c64b04265598647f32c3510ff28cb716a8e9aea

@@ -11,12 +11,21 @@ if (isset($_SESSION['id'])){
     //echo $loggedAccountId;
 }
 
-
+$warnings="";
 // user data received from login
 
 if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
+    if (!isset($_POST["csrf_token"]) || $_SESSION["csrf_token"]!=$_POST["csrf_token"])
+    {
+        echo "Security error.";
+        exit();
+    }
     $userEmail = $_POST['txtUserEmail'];
     $userPass = $_POST['txtUserPassword'];
+
+    //check if password is 8 characters long with a captial+special character
+    // ( only check one if, no else) 
+
     // hashing the input password
 
     $password = $userPass;
@@ -101,11 +110,11 @@ if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
                                     }
                                     else
                                     {
-                                        echo "Error: Wrong username or password";
+                                        $warnings="<p>Email and/or password incorrect.</p>";
                                     };
                                 }
                                     else
-                    {echo "oh no";};
+                    {$warnings="<p>Email and/or password incorrect.</p>";};
                 }
             }
 //csrf token
@@ -161,7 +170,9 @@ nav(0);
                 </button>
             
             </form>
-            
+            <?php
+                echo $warnings;
+            ?>
         </div>
     
 

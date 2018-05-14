@@ -1,4 +1,5 @@
 <?php
+    session_start();
     //INCLUDE+DB CONNECTION
     include "db.php";
     include "include.php";
@@ -19,6 +20,11 @@
         $txtFirstName = $_POST['txtFirstName'];
         $txtLastName = $_POST['txtLastName'];
         $txtPassword = $_POST['txtPassword'];
+        //Checking the password to have numbers, small and capital letters
+        if (!preg_match('/[^A-Za-z0-9]+/', $txtPassword) || strlen($txtPassword) < 8) {
+            echo "Invalid password! Make sure it contains Capital letter, special character and has 8 letters";
+            exit();
+        }
         $txtEmail = $_POST['txtEmail'];
         $urlChannel = $_POST['urlChannel'];
         $response = $_POST["g-recaptcha-response"];
@@ -53,7 +59,7 @@
                 //FILE UPLOAD FIRST
                 $sPathToPicture='';
                 if (isset($_FILES['profilePic']['tmp_name'])){
-                    echo $_FILES['profilePic']['tmp_name'];
+                    /* echo $_FILES['profilePic']['tmp_name']; */
                     if(check_file_mime($_FILES['profilePic']['tmp_name'])){
                         $picturePath = $_FILES['profilePic']['name'];
                         $extension = pathinfo($picturePath, PATHINFO_EXTENSION);
@@ -69,12 +75,14 @@
                 //preparing statement
                 $insertUserStmt=$conn->prepare("INSERT INTO users (first_name, last_name, email, password, channel, profile_pic) VALUES (:first_name, :last_name, :email, :password, :channel, :profilePic);");
                 $insertUserStmt->bindParam(':first_name', $txtFirstName, PDO::PARAM_STR, 45);
-                $insertUserStmt->bindParam(':last_name', $txtFirstName, PDO::PARAM_STR, 45);
+                $insertUserStmt->bindParam(':last_name', $txtLastName, PDO::PARAM_STR, 45);
                 $insertUserStmt->bindParam(':email', $txtEmail, PDO::PARAM_STR, 255);
                 $insertUserStmt->bindParam(':password', $hashed_password, PDO::PARAM_STR, 255);
                 $insertUserStmt->bindParam(':channel', $urlChannel, PDO::PARAM_STR, 255);
                 $insertUserStmt->bindParam(':profilePic', $sPathToPicture, PDO::PARAM_STR, 300);
                 $insertUserStmt->execute();
+
+                header("Location: index.php");
             }
     
     
