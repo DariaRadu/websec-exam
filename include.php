@@ -41,6 +41,7 @@ function nav($loggedIn){
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="profile-page.php">Profile</a></li> 
                 <li><a href="posts.php">Timeline</a></li>
+                <li><a href="chat.php">Open Chat</a></li>
                 <li><a href="logout.php">Logout</a></li>  
             </ul>
             </div>

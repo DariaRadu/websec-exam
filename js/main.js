@@ -4,4 +4,7 @@ $(document).ready(function() {
 	$('#modalEditProfile').modal();
   });
 
-console.log("main.js is working");
+//UPDATE CHAT
+if ( window.location.href.indexOf("chat") > -1) {
+	console.log('chat-sama');
+}
