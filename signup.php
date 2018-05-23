@@ -4,7 +4,7 @@
     include "db.php";
     include "include.php";
     
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    //$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     $warnings='';
     //profile pics folder
     $profilePicFolder='img/dp/';
