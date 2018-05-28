@@ -7,7 +7,7 @@ include "db.php";
 include "include.php";
 
 //variables
-$postsImgFolder='img/posts/';
+$postsImgFolder='/img/posts/';
 
 //CHECK SESSION
 if (isset($_SESSION['id'])){

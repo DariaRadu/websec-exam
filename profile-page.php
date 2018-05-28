@@ -8,7 +8,7 @@ include "db.php";
 include "include.php";
 
 //variables
-$postsImgFolder='img/posts/';
+$postsImgFolder='./img/posts/';
 
 if (isset($_SESSION['id'])){
     $loggedIn=$_SESSION['id'];
@@ -66,10 +66,17 @@ if (isset ($_POST['comment']) && ($_POST['comment']!="") && isset ($_GET['pid'])
 $_SESSION["csrf_token"]=hash("sha256",rand()."rxY|1I]RkcmU.m2");
 
 //GET PROFILE INFO
-$getProfileInfo=$conn->query("SELECT first_name, last_name, channel, profile_pic FROM users WHERE id=".$_SESSION['id']);
+$getProfileInfo=$conn->query("SELECT first_name, last_name, channel, profile_pic, iv FROM users WHERE id=".$_SESSION['id']);
 $getProfileInfo->execute();
 
 $userInfo=$getProfileInfo->fetch( PDO::FETCH_ASSOC );
+//DECRYPT INFO
+/* $secret_key="HoL]Y2tgJOF-V.$?URB7a/6*gO7:C,";
+$iv_len=openssl_cipher_iv_length("aes-256-cbc");
+$iv=openssl_random_pseudo_bytes($iv_len); */
+$userInfo["first_name"] = openssl_decrypt($userInfo["first_name"], 'AES-256-CBC', $secret_key, OPENSSL_RAW_DATA, $userInfo['iv']);
+$userInfo["last_name"] = openssl_decrypt($userInfo["last_name"], 'AES-256-CBC', $secret_key, OPENSSL_RAW_DATA, $userInfo['iv']);
+
 $profileDiv="<div class='card-image'>
                 <img src='".$userInfo['profile_pic']."'>
                 <span class='card-title'>".$userInfo['first_name'].' '.$userInfo['last_name']."</span>
