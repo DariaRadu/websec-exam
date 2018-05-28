@@ -1,4 +1,10 @@
 <?php
+// using a "fort knox" lvl of password generated from randomkeygen.com for security purposes
+$secret_key="HoL]Y2tgJOF-V.$?URB7a/6*gO7:C,";
+
+
+$iv_len=openssl_cipher_iv_length("aes-256-cbc");
+$iv=openssl_random_pseudo_bytes($iv_len);
 
 function gen_header() {
     ?>
@@ -52,6 +58,7 @@ function nav($loggedIn){
 }
 
 function footer(){
+    echo exec('whoami'); 
     ?>
         <!-- Compiled and minified JavaScript -->
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>

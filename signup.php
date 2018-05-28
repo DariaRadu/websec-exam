@@ -7,7 +7,7 @@
     //$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     $warnings='';
     //profile pics folder
-    $profilePicFolder='img/dp/';
+    $profilePicFolder='./img/dp/';
 
     //GETTING DATA FROM FORM
     if($_POST){
@@ -72,10 +72,15 @@
                     } 
                 }
 
+                
+                $secret_firstname = openssl_encrypt($txtFirstName,"aes-256-cbc",$secret_key,OPENSSL_RAW_DATA,$iv);
+                $secret_lastname = openssl_encrypt($txtLastName,"aes-256-cbc",$secret_key,OPENSSL_RAW_DATA,$iv);
+                //echo $secret_email;
+                
                 //preparing statement
-                $insertUserStmt=$conn->prepare("INSERT INTO users (first_name, last_name, email, password, channel, profile_pic) VALUES (:first_name, :last_name, :email, :password, :channel, :profilePic);");
-                $insertUserStmt->bindParam(':first_name', $txtFirstName, PDO::PARAM_STR, 45);
-                $insertUserStmt->bindParam(':last_name', $txtLastName, PDO::PARAM_STR, 45);
+                $insertUserStmt=$conn->prepare("INSERT INTO users (first_name, last_name, email, password, channel, profile_pic, iv) VALUES (:first_name, :last_name, :email, :password, :channel, :profilePic,'".$iv."');");
+                $insertUserStmt->bindParam(':first_name', $secret_firstname, PDO::PARAM_STR, 300);
+                $insertUserStmt->bindParam(':last_name', $secret_lastname, PDO::PARAM_STR, 300);
                 $insertUserStmt->bindParam(':email', $txtEmail, PDO::PARAM_STR, 255);
                 $insertUserStmt->bindParam(':password', $hashed_password, PDO::PARAM_STR, 255);
                 $insertUserStmt->bindParam(':channel', $urlChannel, PDO::PARAM_STR, 255);
