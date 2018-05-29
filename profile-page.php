@@ -97,10 +97,13 @@ $profileDiv="<div class='card-image'>
 $postsDiv='<div class="posts card">';
 
 //posts query
-$getAllPosts=$conn->query("SELECT posts.id, posts.date, posts.post_text, posts.img_url, users.first_name, users.last_name from posts JOIN users ON user_id=users.id WHERE user_id=".$_SESSION['id']." ORDER BY posts.id DESC;");
+$getAllPosts=$conn->query("SELECT posts.id, posts.date, posts.post_text, posts.img_url, users.first_name, users.last_name, users.iv from posts JOIN users ON user_id=users.id WHERE user_id=".$_SESSION['id']." ORDER BY posts.id DESC;");
 $getAllPosts->execute();
 
 while($post= $getAllPosts->fetch( PDO::FETCH_ASSOC )){
+    $post["first_name"] = openssl_decrypt($post["first_name"], 'AES-256-CBC', $secret_key, OPENSSL_RAW_DATA, $post['iv']);
+    $post["last_name"] = openssl_decrypt($post["last_name"], 'AES-256-CBC', $secret_key, OPENSSL_RAW_DATA, $post['iv']);
+
     $commentsDiv='<div class="comments card-action">';
     $postDiv='<div class="card post">';
     if ($post['img_url']!=null){
@@ -117,10 +120,12 @@ while($post= $getAllPosts->fetch( PDO::FETCH_ASSOC )){
                 
 
     //comments
-    $getAllComments=$conn->query("SELECT comments.comment, users.first_name, users.last_name FROM comments JOIN users ON users.id=comments.user_id JOIN posts ON posts.id=comments.post_id WHERE post_id=".$post['id']);
+    $getAllComments=$conn->query("SELECT comments.comment, users.first_name, users.last_name, users.iv FROM comments JOIN users ON users.id=comments.user_id JOIN posts ON posts.id=comments.post_id WHERE post_id=".$post['id']);
     $getAllComments->execute();
     
     while($comment= $getAllComments->fetch(PDO::FETCH_ASSOC)){
+        $comment["first_name"] = openssl_decrypt($comment["first_name"], 'AES-256-CBC', $secret_key, OPENSSL_RAW_DATA, $comment['iv']);
+        $comment["last_name"] = openssl_decrypt($comment["last_name"], 'AES-256-CBC', $secret_key, OPENSSL_RAW_DATA, $comment['iv']);
 
         $commentsDiv=$commentsDiv."<div class='comment'>
                                         <p>User:  ". htmlentities($comment['first_name']) ." ". htmlentities($comment['last_name']) ."</p>
