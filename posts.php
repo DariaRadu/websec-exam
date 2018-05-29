@@ -33,7 +33,7 @@ if (isset($_POST["post"]) && $_POST["post"]!=''){
         $extension = pathinfo($picturePath, PATHINFO_EXTENSION);
         $sPostImgName= md5($picturePath).'.'.$extension;
         $imgUrl = $postsImgFolder.$sPostImgName;
-        move_uploaded_file( $_FILES['postImg']['tmp_name'] , $imgUrl );
+        move_uploaded_file( $_FILES['postImg']['tmp_name'] , $_SERVER['DOCUMENT_ROOT'].$imgUrl );
     }
     $insertPost=$conn->prepare("INSERT INTO posts (user_id, date, post_text, img_url) VALUES (:userId, NOW(), :postText, :imgUrl);");
     $insertPost->bindParam(':userId', $userPosting, PDO::PARAM_INT);
@@ -41,7 +41,7 @@ if (isset($_POST["post"]) && $_POST["post"]!=''){
     $insertPost->bindParam(':imgUrl', $imgUrl, PDO::PARAM_STR, 45);
     $insertPost->execute();
 
-    header('Location: '."posts.php");
+    //header('Location: '."posts.php");
 }
 
 
@@ -72,10 +72,12 @@ $_SESSION["csrf_token"]=hash("sha256",rand()."rxY|1I]RkcmU.m2");
 $postsDiv='<div class="posts card">';
 
 //posts query
-$getAllPosts=$conn->query("SELECT posts.id, posts.date, posts.post_text, posts.img_url, users.first_name, users.last_name from posts JOIN users ON user_id=users.id ORDER BY posts.id DESC;");
+$getAllPosts=$conn->query("SELECT posts.id, posts.date, posts.post_text, posts.img_url, users.first_name, users.last_name, users.iv from posts JOIN users ON user_id=users.id ORDER BY posts.id DESC;");
 $getAllPosts->execute();
 
 while($post= $getAllPosts->fetch( PDO::FETCH_ASSOC )){
+    $post["first_name"] = openssl_decrypt($post["first_name"], 'AES-256-CBC', $secret_key, OPENSSL_RAW_DATA, $post['iv']);
+    $post["last_name"] = openssl_decrypt($post["last_name"], 'AES-256-CBC', $secret_key, OPENSSL_RAW_DATA, $post['iv']);
     $commentsDiv='<div class="comments card-action">';
    /*  $postDiv="<div class='post'>
             <p>User:  ". htmlentities($post['first_name']) ." ". htmlentities($post['last_name']) ."</p>
@@ -95,10 +97,12 @@ while($post= $getAllPosts->fetch( PDO::FETCH_ASSOC )){
                 
 
     //comments
-    $getAllComments=$conn->query("SELECT comments.comment, users.first_name, users.last_name FROM comments JOIN users ON users.id=comments.user_id JOIN posts ON posts.id=comments.post_id WHERE post_id=".$post['id']);
+    $getAllComments=$conn->query("SELECT comments.comment, users.first_name, users.last_name, users.iv FROM comments JOIN users ON users.id=comments.user_id JOIN posts ON posts.id=comments.post_id WHERE post_id=".$post['id']);
     $getAllComments->execute();
     
     while($comment= $getAllComments->fetch(PDO::FETCH_ASSOC)){
+        $comment["first_name"] = openssl_decrypt($comment["first_name"], 'AES-256-CBC', $secret_key, OPENSSL_RAW_DATA, $comment['iv']);
+        $comment["last_name"] = openssl_decrypt($comment["last_name"], 'AES-256-CBC', $secret_key, OPENSSL_RAW_DATA, $comment['iv']);
 
         $commentsDiv=$commentsDiv."<div class='comment'>
                                         <p>User:  ". htmlentities($comment['first_name']) ." ". htmlentities($comment['last_name']) ."</p>
