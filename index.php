@@ -8,6 +8,16 @@ $time = $_SERVER['REQUEST_TIME'];
 */
 $timeout_duration = 10;
 
+
+/* LOGIN ATTEMPT SAVED SHIT FAM
+                                            $loginAttempt['attempts'] ++;
+                                            if($loginAttempt['attempts'] == 3 ){
+                                                $warnings="<p>You got fucked up for 5 minutes fam</p>";
+                                            }else if($loginAttempt['attempts'] == 4){
+                                              
+*/
+
+
 /**
 * Here we look for the user's LAST_ACTIVITY timestamp. If
 * it's set and indicates our $timeout_duration has passed,
@@ -31,6 +41,8 @@ include_once "include.php";
 //DATABASE CONNECTION
 include "db.php";
 
+
+
 session_start();
 if (isset($_SESSION['id'])){
     $loggedAccountId = $_SESSION['id'];
@@ -46,6 +58,29 @@ if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
         echo "Security error.";
         exit();
     }
+
+    $ipAdress = getRealIpAddr();      
+    $getLoginAttempts=$conn->query("SELECT ip_address, timestamp, attempts FROM login_attempt WHERE ip_address ='".$ipAdress."'"  );
+    $getLoginAttempts->execute();
+    
+    $loginAttempt = $getLoginAttempts->fetch( PDO::FETCH_ASSOC );
+
+    if($loginAttempt){
+        $currentTimestamp = time();
+        $lastTimestamp = strtotime($loginAttempt['timestamp']);
+        $timeDifference = (($currentTimestamp - $lastTimestamp)/60);
+    }
+        if($loginAttempt['attempts'] == 3 && $timeDifference <= 5 ){
+            $warnings="<p>You got blocked out for 5 minutes</p>";
+        }else  { 
+            if($timeDifference > 2){
+                $updateLoginAttempt =$conn->query("UPDATE login_attempt SET attempts = 0 WHERE ip_address ='".$ipAdress."'" );
+            }
+            
+                
+        
+            
+                
     $userEmail = $_POST['txtUserEmail'];
     $userPass = $_POST['txtUserPassword'];
 
@@ -100,7 +135,7 @@ if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
                 $warnings="<p>Captcha not verified, please try again.</p>";
             } else if ($captcha_success->success==true) {
                     if ( count($users) > 0 ){
-                        echo " existing user";
+                        //echo " existing user";
                         $correctPassword = $users[0]["password"];
                         // verifying the hashed password
                         $hashed_password_correct = password_verify($p_password.$peber, $correctPassword);
@@ -111,38 +146,41 @@ if (isset($_POST['txtUserEmail'])&& isset($_POST['txtUserPassword'])){
                                     $_SESSION['id']=$userId;
                                     header("Location: posts.php");
                                     exit();  
-                                /*  //adding the user ID to the session with encryption
-                                    
-                                    $secret_message= $userId;
-
-                                    // using a "fort knox" lvl of password generated from randomkeygen.com for security purposes
-                                    $secret_key="HoL]Y2tgJOF-V.$?URB7a/6*gO7:C,";
-
-                                    
-                                    $iv_len=openssl_cipher_iv_length("aes-256-cbc");
-                                    $iv=openssl_random_pseudo_bytes($iv_len);
-
-                                    $secret_id = openssl_encrypt($secret_message,"aes-256-cbc",$secret_key,OPENSSL_RAW_DATA,$iv);
-                                    $_SESSION['id'] = $secret_id;
-                                    echo $secret_id;
-                                    echo $_SESSION['id'];
-
-                                    $output = openssl_decrypt($secret_id, 'AES-256-CBC', $secret_key, OPENSSL_RAW_DATA, $iv);
-                                    
-                                    echo "This id is".$output; */
-
-
                                     
                                     }
                                     else
-                                    {
+                                    {   
                                         $warnings="<p>Email and/or password incorrect.</p>";
+                                        if($loginAttempt){
+                                            $updateLoginAttempt =$conn->query("UPDATE login_attempt SET attempts = attempts + 1 WHERE ip_address ='".$ipAdress."'" ); 
+                                            echo "something";
+                                        }else{
+                                            $addLoginAttempt=$conn->query("INSERT INTO login_attempt (ip_address, attempts) values ('".$ipAdress."', 1)");
+                                            echo "something else here";
+                                        }
+
+                                        
                                     };
                                 }
                                     else
-                    {$warnings="<p>Email and/or password incorrect.</p>";};
+                    {
+                        if($loginAttempt){
+                            $updateLoginAttempt =$conn->query("UPDATE login_attempt SET attempts = attempts + 1 WHERE ip_address ='".$ipAdress."'" ); 
+                            echo "something";
+                        }else{
+                            $addLoginAttempt=$conn->query("INSERT INTO login_attempt (ip_address, attempts) values ('".$ipAdress."', 1)");
+                            echo "something else here";
+                        }
+                        $warnings="<p>Email is incorrect.</p>";};
                 }
             }
+            
+            
+        
+    }
+
+
+
 //csrf token
 $_SESSION["csrf_token"]=hash("sha256",rand()."1y=gNjFK5e[-8>-");
 
@@ -210,3 +248,5 @@ nav(0);
 footer();
 
 ?>
+
+

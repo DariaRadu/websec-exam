@@ -1,8 +1,6 @@
-CREATE DATABASE  IF NOT EXISTS `youconnect` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `youconnect`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: youconnect
+-- Host: localhost    Database: youconnect
 -- ------------------------------------------------------
 -- Server version	5.5.5-10.1.31-MariaDB
 
@@ -16,32 +14,6 @@ USE `youconnect`;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Table structure for table `chat`
---
-
-DROP TABLE IF EXISTS `chat`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `chat` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `message` varchar(300) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_chat_users_idx` (`user_id`),
-  CONSTRAINT `fk_chat_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `chat`
---
-
-LOCK TABLES `chat` WRITE;
-/*!40000 ALTER TABLE `chat` DISABLE KEYS */;
-/*!40000 ALTER TABLE `chat` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `comments`
@@ -73,6 +45,31 @@ LOCK TABLES `comments` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `login_attempt`
+--
+
+DROP TABLE IF EXISTS `login_attempt`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `login_attempt` (
+  `id` int(11) NOT NULL,
+  `ip_address` varchar(255) NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `attempts` int(5) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `login_attempt`
+--
+
+LOCK TABLES `login_attempt` WRITE;
+/*!40000 ALTER TABLE `login_attempt` DISABLE KEYS */;
+/*!40000 ALTER TABLE `login_attempt` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `posts`
 --
 
@@ -89,7 +86,7 @@ CREATE TABLE `posts` (
   KEY `fk_user_id_idx` (`user_id`),
   KEY `fk_user_id_post_idx` (`user_id`),
   CONSTRAINT `fk_user_id_post` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -110,8 +107,8 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `first_name` varchar(300) NOT NULL,
-  `last_name` varchar(300) NOT NULL,
+  `first_name` varchar(45) NOT NULL,
+  `last_name` varchar(45) NOT NULL,
   `email` varchar(45) NOT NULL,
   `password` varchar(600) NOT NULL,
   `channel` varchar(255) NOT NULL,
@@ -119,7 +116,7 @@ CREATE TABLE `users` (
   `iv` varchar(300) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -140,4 +137,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-24 21:53:19
+-- Dump completed on 2018-07-04 17:39:05

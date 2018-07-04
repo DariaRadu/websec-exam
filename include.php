@@ -7,6 +7,14 @@ $iv_len=openssl_cipher_iv_length("aes-256-cbc");
 $iv=openssl_random_pseudo_bytes($iv_len);
 
 function gen_header() {
+     //If the HTTPS is not found to be "on"
+    if(!isset($_SERVER["HTTPS"]) || $_SERVER["HTTPS"] != "on")
+    {
+        //Tell the browser to redirect to the HTTPS URL.
+        header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
+        //Prevent the rest of the script from executing.
+        exit;
+    }
     ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -47,7 +55,7 @@ function nav($loggedIn){
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="profile-page.php">Profile</a></li> 
                 <li><a href="posts.php">Timeline</a></li>
-                <li><a href="chat.php">Open Chat</a></li>
+                <!-- <li><a href="chat.php">Open Chat</a></li> -->
                 <li><a href="logout.php">Logout</a></li>  
             </ul>
             </div>
@@ -83,6 +91,23 @@ function check_file_mime( $tmpname ) {
     else {
         return FALSE;
     }
+}
+
+function getRealIpAddr()
+{
+    if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet
+    {
+      $ip=$_SERVER['HTTP_CLIENT_IP'];
+    }
+    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   //to check ip is pass from proxy
+    {
+      $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
+    }
+    else
+    {
+      $ip=$_SERVER['REMOTE_ADDR'];
+    }
+    return $ip;
 }
 
 ?>
